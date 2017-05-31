@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PRN_bitstreams &#8212; Tx_functions 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Tx_functions 0.1.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for PRN_bitstreams</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module contains a set of functions which produce binary sequences either pseudo-random</span>
+<span class="sd">or deterministic. Algorithms are developed based on the book *Spread Spectrum Systems for</span>
+<span class="sd">GNSS and Wireless Communications* by Jack K. Holmes.</span>
+
+<span class="sd">Returned binary sequences are numpy arrays of the type *bool*.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="ssrg"><a class="viewcode-back" href="../siggens.html#PRN_bitstreams.ssrg">[docs]</a><span class="k">def</span> <span class="nf">ssrg</span><span class="p">(</span><span class="n">init_reg</span><span class="p">,</span> <span class="n">fb_reg</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function generates a binary sequence using structure of the *simple shift register generator*</span>
+<span class="sd">    -- SSRG -- with M-bit shift register. The generator is in a Fibonacci form. The length of the shift</span>
+<span class="sd">    register *M* is defined by the length of the register *init_reg* or *fb_reg*. Both are suppose to</span>
+<span class="sd">    be of the same length.</span>
+
+<span class="sd">    :param init_reg: M-bit initialization sequence in the shift register. NumPy array *bool*.</span>
+<span class="sd">    :param fb_reg: M-bit Numpy *bool* array which defines feedbacks of the shift register. Log *1* means a feedback exists for an appropriate bit of the register.</span>
+<span class="sd">    :param args: optional set of arguments</span>
+
+<span class="sd">    +-------------+-------------+----------+-------------------------------------------+</span>
+<span class="sd">    | Key word    | Possible    | Default  | Description                               |</span>
+<span class="sd">    |             | values      |          |                                           |</span>
+<span class="sd">    +=============+=============+==========+===========================================+</span>
+<span class="sd">    | n_bits      | positive    |          |                                           |</span>
+<span class="sd">    |             | integers    |     7    | length of the output sequence in bits     |</span>
+<span class="sd">    +-------------+-------------+----------+-------------------------------------------+</span>
+<span class="sd">    | verbosity   | boolean T/F | *False*  |  *False* - nothing to be printed,         |</span>
+<span class="sd">    |             |             |          |  *True* - the state of the shift register |</span>
+<span class="sd">    |             |             |          |  is being printed  for each cycle         |</span>
+<span class="sd">    +-------------+-------------+----------+-------------------------------------------+</span>
+
+<span class="sd">    :return: a binary sequence of the length &#39;n-bits&#39; (default 7 bits) -- the output code.</span>
+
+<span class="sd">    **Example:**</span>
+
+<span class="sd">    See, how to use the function to produce a 7-bits output sequence by the 3-bits SSRG with the feedback from the output of</span>
+<span class="sd">    the first and the second bit of the shift register. The register is initialized by one log. *1* at</span>
+<span class="sd">    the first bit (*numpy-array&#39;s element [0]*):</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import PRN_bitstream as prn</span>
+<span class="sd">    &gt;&gt;&gt; init = np.array ([1,0,0])</span>
+<span class="sd">    &gt;&gt;&gt; fb = np.array ([0,1,1])</span>
+<span class="sd">    &gt;&gt;&gt; out_seq = prn.ssrg(init,fb)</span>
+
+<span class="sd">    Another example producing the output sequence with length of 50 bits and states of the shift register</span>
+<span class="sd">    printed for each step:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import PRN_bitstream as prn</span>
+<span class="sd">    &gt;&gt;&gt; init = np.array ([1,0,0,0,0,0])</span>
+<span class="sd">    &gt;&gt;&gt; fb = np.array   ([0,1,1,0,1,0])</span>
+<span class="sd">    &gt;&gt;&gt; out_seq = prn.ssrg(init,fb,n_bits=50,verbosity=True)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;n_bits&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">n_bits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;n_bits&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_bits</span> <span class="o">=</span> <span class="mi">7</span>
+
+    <span class="k">if</span> <span class="s1">&#39;verbosity&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">verbosity</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;verbosity&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">verbosity</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#  Output register</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_bits</span><span class="p">])</span>
+    <span class="c1">#  Shift register</span>
+    <span class="n">shft_reg</span> <span class="o">=</span> <span class="n">init_reg</span>
+    <span class="n">nob</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shft_reg</span><span class="p">)</span>
+    <span class="c1">#  Feedback registers - bit &#39;1&#39; means -&gt; FB is connected</span>
+    <span class="c1">#  defined as an input argument fb_reg</span>
+    <span class="k">for</span> <span class="n">i1</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n_bits</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">in1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">shft_reg</span><span class="p">,</span><span class="n">fb_reg</span><span class="p">)</span><span class="o">%</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="n">shft_reg</span><span class="p">[</span><span class="n">nob</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">shft_reg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">shft_reg</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">shft_reg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">in1</span>
+        <span class="k">if</span> <span class="n">verbosity</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;For i=&#39;</span><span class="p">,</span><span class="n">i1</span><span class="p">,</span><span class="s1">&#39;shift register:&#39;</span><span class="p">,</span><span class="n">shft_reg</span><span class="p">,</span><span class="s1">&#39;output:&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="gold_seq"><a class="viewcode-back" href="../siggens.html#PRN_bitstreams.gold_seq">[docs]</a><span class="k">def</span> <span class="nf">gold_seq</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function generates *Gold&#39;s binary sequence* using two 10-bits SSRGs *G1* and *G2* when</span>
+<span class="sd">    each of which generates a *maximal length sequence* of the length *N = 2^10 - 1*.</span>
+<span class="sd">    * G1 = x^10 + x^3</span>
+<span class="sd">    * G2 = x^10 + x^9 + x^8 + x^6 + x^3 + x^2</span>
+<span class="sd">    Both of the registers are initialized by a sequence *[1 1 1 1 1 1 1 1 1 1]*.</span>
+
+<span class="sd">    The output sequence is an exclusive *OR* result of the G1 output and delayed G2 output. The</span>
+<span class="sd">    delayed G2 output is obtained by the exclusive *OR* of the selected positions of the two taps</span>
+<span class="sd">    defined by input arguments **x1** and **x2**.</span>
+
+<span class="sd">    All the structure is developed according to the GPS standards -- *Interface Control</span>
+<span class="sd">    Document IS-GPS-200H* -- C/A code.</span>
+
+<span class="sd">    :param x1: the first selected position from the *G2*</span>
+<span class="sd">    :param x2: the second selected position from the *G2*</span>
+<span class="sd">    :param args: optional set of arguments</span>
+
+<span class="sd">    +-------------+-------------+----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word    | Possible    | Default  | Description                                       |</span>
+<span class="sd">    |             | values      |          |                                                   |</span>
+<span class="sd">    +=============+=============+==========+===================================================+</span>
+<span class="sd">    | no_bits     | positive    |          |  number of bits generated for one period, full    |</span>
+<span class="sd">    |             | integers    |   1023   |  period of the Gold&#39;s code contains 1023 bits     |</span>
+<span class="sd">    +-------------+-------------+----------+---------------------------------------------------+</span>
+<span class="sd">    | no_periods  | positive    |          |  number of periods of the code                    |</span>
+<span class="sd">    |             | integers    |   1      |  being generated                                  |</span>
+<span class="sd">    +-------------+-------------+----------+---------------------------------------------------+</span>
+<span class="sd">    | verbosity   | boolean T/F | *False*  |  *False* - nothing to be printed,                 |</span>
+<span class="sd">    |             |             |          |  *True* - the state of the shift register         |</span>
+<span class="sd">    |             |             |          |  and feedbacks is being printed  for each cycle   |</span>
+<span class="sd">    +-------------+-------------+----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: a binary sequence of the length &#39;no_bits&#39; x &#39;no_periods&#39; -- the Gold&#39;s code.</span>
+
+<span class="sd">    **Example:**</span>
+
+<span class="sd">    Gold&#39;s sequence generator being used to generate a PRN code of the satellite SV1. Returned is one</span>
+<span class="sd">    period with a full length of 1023 bits. Generator in a silence mode (*verbosity*=False):</span>
+
+<span class="sd">    &gt;&gt;&gt; import PRN_bitstream as prn</span>
+<span class="sd">    &gt;&gt;&gt; out_seq = prn.gold_seq(2,6)</span>
+
+<span class="sd">    And the same but 30 periods are generated in row:</span>
+
+<span class="sd">    &gt;&gt;&gt; import PRN_bitstream as prn</span>
+<span class="sd">    &gt;&gt;&gt; out_seq = prn.gold_seq(2,6,no_periods = 30)</span>
+
+<span class="sd">    Another example producing a PRN code of the satellite SV2. Returned is only a fragment of the period,</span>
+<span class="sd">    first 100 bits of the code. Generator provides text output for each of the cycles to check internal</span>
+<span class="sd">    state of its registers and feedbacks:</span>
+
+<span class="sd">    &gt;&gt;&gt; import PRN_bitstream as prn</span>
+<span class="sd">    &gt;&gt;&gt; out_seq = prn.gold_seq(3,7,no_bits = 100, verbosity = True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;verbosity&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">verbosity</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;verbosity&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">verbosity</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="s1">&#39;no_bits&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">no_bits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;no_bits&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">no_bits</span> <span class="o">=</span> <span class="mi">1023</span>
+
+    <span class="k">if</span> <span class="s1">&#39;no_periods&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">no_periods</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;no_periods&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">no_periods</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Output register</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">no_periods</span> <span class="o">*</span> <span class="n">no_bits</span><span class="p">])</span>
+    <span class="c1"># Maximum-length sequence generators:</span>
+    <span class="c1">#  Shift registers</span>
+    <span class="n">shft_reg_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">shft_reg_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#  Feedback registers - bit &#39;1&#39; means -&gt; FB is connected</span>
+    <span class="n">fbck_reg_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">fbck_reg_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G1: &#39;</span><span class="p">,</span> <span class="n">shft_reg_1</span><span class="p">,</span> <span class="s1">&#39;G2: &#39;</span><span class="p">,</span> <span class="n">shft_reg_2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">no_periods</span> <span class="o">*</span> <span class="n">no_bits</span><span class="p">):</span>
+        <span class="n">g1</span> <span class="o">=</span> <span class="n">shft_reg_1</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+        <span class="n">g2</span> <span class="o">=</span> <span class="p">(</span><span class="n">shft_reg_2</span><span class="p">[</span><span class="n">x1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">shft_reg_2</span><span class="p">[</span><span class="n">x2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">g1</span> <span class="o">+</span> <span class="n">g2</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+
+        <span class="n">in1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">shft_reg_1</span><span class="p">,</span> <span class="n">fbck_reg_1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+        <span class="n">in2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">shft_reg_2</span><span class="p">,</span> <span class="n">fbck_reg_2</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>
+
+        <span class="n">shft_reg_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">shft_reg_1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">shft_reg_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">in1</span>
+
+        <span class="n">shft_reg_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">shft_reg_2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">shft_reg_2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">in2</span>
+
+        <span class="c1"># g1  = shft_reg_1 [9]</span>
+        <span class="c1"># g2  = ( shft_reg_2[x1] + shft_reg_2[x2] ) % 2</span>
+        <span class="c1"># x[i1] = ( g1 + g2 ) % 2</span>
+
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G1:&#39;</span><span class="p">,</span> <span class="n">shft_reg_1</span><span class="p">,</span> <span class="s1">&#39;G2:&#39;</span><span class="p">,</span> <span class="n">shft_reg_2</span><span class="p">,</span> <span class="s1">&#39;g2a:&#39;</span><span class="p">,</span> <span class="n">shft_reg_2</span><span class="p">[</span><span class="n">x1</span><span class="p">],</span> <span class="s1">&#39;g2b:&#39;</span><span class="p">,</span> <span class="n">shft_reg_2</span><span class="p">[</span><span class="n">x2</span><span class="p">],</span> <span class="s1">&#39;g2out:&#39;</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span>
+                  <span class="s1">&#39;g1out:&#39;</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="s1">&#39;out:&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Petr Bojda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,69 @@
+\documentclass[twoside,11pt]{article}
+
+\usepackage{TechReport_2016_CZ}
+
+
+\fancyhf{}
+\lhead{\color{bgr_DarkBlue}Využití SDR v leteckých aplikacích}
+\rhead{\color{bgr_DarkBlue}Struktura a parametry signálu}
+
+\lfoot{\color{bgr_DarkBlue} v1.0, 2016}
+\rfoot{\color{bgr_DarkBlue} Strana \thepage}
+
+
+\begin{document}
+
+\begin{titlepage}
+
+
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+
+{ \huge \bfseries Analýza využití softwarově definovaného rádia v leteckých aplikacích.}\\[2in] % Title of your document
+\fontsize{17}{12}\textbf{\textcolor{bgr_DarkBlue}{Návrh signálu a jeho parametry}}\\[4in]
+        
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+\begin{minipage}{0.9\textwidth}
+\begin{flushleft} \large
+\emph{Autor:} Petr \textsc{BOJDA}\\
+
+\emph{Adresa:} Morávka 575, okr. Frýdek-Místek\\
+\emph{Dne:} \today\\
+\emph{Verze dokumentu:} 1.0
+\end{flushleft}
+\end{minipage}
+
+% generates the title
+
+\end{titlepage}
+
+% ********************************** CHAPTER 1 Úvod ***********************************************
+\include {./ch_01/tex/chapter_01}
+
+% ********************************** CHAPTER 2 Simulace ***********************************
+\include {./ch_02/tex/chapter_02}
+
+% ********************************** CHAPTER 3 Realizace ***********************
+\include {./ch_03/tex/chapter_03}
+
+% ********************************** CHAPTER 3 Realizace ***********************
+\include {./ch_04/tex/chapter_04}
+
+
+% ********************************** CHAPTER 3 Realizace ***********************
+\include {./ch_05/tex/chapter_05}
+
+\end{document}

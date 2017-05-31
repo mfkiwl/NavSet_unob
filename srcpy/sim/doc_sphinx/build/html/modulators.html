@@ -1,0 +1,549 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modulators Package &#8212; Tx_functions 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Tx_functions 0.1.1 documentation" href="index.html" />
+    <link rel="up" title="&lt;no title&gt;" href="modules.html" />
+    <link rel="next" title="Filters Package" href="filters.html" />
+    <link rel="prev" title="Siggens Package" href="siggens.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="modulators-package">
+<h1>Modulators Package<a class="headerlink" href="#modulators-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-constallation_mappers">
+<span id="modulators-constallation-mappers-module"></span><h2>modulators.constallation_mappers module<a class="headerlink" href="#module-constallation_mappers" title="Permalink to this headline">¶</a></h2>
+<p>Functions of the module <strong>Constallation Mapper</strong> produce baseband signals
+according to required passband modulations and shape of the pulse.</p>
+<p>At this moment available choices are BPSK or QPSK modulations and three
+different pulses - rectangular, sinus cardinale or raised cosine.</p>
+<p>Returned <em>baseband</em> signals are numpy arrays of the same size as the time axis <em>t</em>.</p>
+<dl class="function">
+<dt id="constallation_mappers.rcos_bpsk_map">
+<code class="descclassname">constallation_mappers.</code><code class="descname">rcos_bpsk_map</code><span class="sig-paren">(</span><em>t</em>, <em>data</em>, <em>b_rate</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/constallation_mappers.html#rcos_bpsk_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#constallation_mappers.rcos_bpsk_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a baseband signal to modulate with BPSK and raised cosine pulses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>data</strong> &#8211; binary sequence which is going to be mapped</li>
+<li><strong>b_rate</strong> &#8211; bit rate of the transmitted bit-stream</li>
+<li><strong>args</strong> &#8211; optional arguments, see the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tp</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of a single symbol</td>
+</tr>
+<tr class="row-odd"><td>td</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>delay of the signal with reference to the origin
+of the time axis</td>
+</tr>
+<tr class="row-even"><td>pw</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of the sinc - main lobe</td>
+</tr>
+<tr class="row-odd"><td>alpha</td>
+<td>positive
+float</td>
+<td>0.8</td>
+<td>roll-off factor</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Baseband signal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="constallation_mappers.rcos_qpsk_map">
+<code class="descclassname">constallation_mappers.</code><code class="descname">rcos_qpsk_map</code><span class="sig-paren">(</span><em>t</em>, <em>data</em>, <em>s_rate</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/constallation_mappers.html#rcos_qpsk_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#constallation_mappers.rcos_qpsk_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a baseband signal to modulate with QPSK and raised cosine pulses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>data</strong> &#8211; binary sequence which is going to be mapped</li>
+<li><strong>s_rate</strong> &#8211; symbol rate of the transmitted baseband signal</li>
+<li><strong>args</strong> &#8211; optional arguments, see the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tp</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of a single symbol</td>
+</tr>
+<tr class="row-odd"><td>td</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>delay of the signal with reference to the origin
+of the time axis</td>
+</tr>
+<tr class="row-even"><td>pw</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of the sinc - main lobe</td>
+</tr>
+<tr class="row-odd"><td>alpha</td>
+<td>positive
+float</td>
+<td>0.8</td>
+<td>roll-off factor</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Baseband signal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="constallation_mappers.rect_bpsk_map">
+<code class="descclassname">constallation_mappers.</code><code class="descname">rect_bpsk_map</code><span class="sig-paren">(</span><em>t</em>, <em>data</em>, <em>b_rate</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/constallation_mappers.html#rect_bpsk_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#constallation_mappers.rect_bpsk_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a baseband signal for a BPSK modulation with rectangular pulses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>data</strong> &#8211; binary sequence which is going to be mapped</li>
+<li><strong>b_rate</strong> &#8211; bit rate of the transmitted bit-stream</li>
+<li><strong>args</strong> &#8211; optional arguments, see the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tp</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of a single symbol</td>
+</tr>
+<tr class="row-odd"><td>td</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>delay of the signal with reference to the origin
+of the time axis</td>
+</tr>
+<tr class="row-even"><td>ts</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>the space between pulses in a stream</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Baseband signal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="constallation_mappers.rect_qpsk_map">
+<code class="descclassname">constallation_mappers.</code><code class="descname">rect_qpsk_map</code><span class="sig-paren">(</span><em>t</em>, <em>data</em>, <em>s_rate</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/constallation_mappers.html#rect_qpsk_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#constallation_mappers.rect_qpsk_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a baseband signal to modulate with QPSK and rectangular pulses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>data</strong> &#8211; binary sequence which is going to be mapped</li>
+<li><strong>s_rate</strong> &#8211; symbol rate of the transmitted baseband signal</li>
+<li><strong>args</strong> &#8211; optional arguments, see the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tp</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of a single symbol</td>
+</tr>
+<tr class="row-odd"><td>td</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>delay of the signal with reference to the origin
+of the time axis</td>
+</tr>
+<tr class="row-even"><td>ts</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>the space between pulses in a stream</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Baseband signal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="constallation_mappers.sinc_bpsk_map">
+<code class="descclassname">constallation_mappers.</code><code class="descname">sinc_bpsk_map</code><span class="sig-paren">(</span><em>t</em>, <em>data</em>, <em>b_rate</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/constallation_mappers.html#sinc_bpsk_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#constallation_mappers.sinc_bpsk_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a baseband signal to modulate with BPSK and sinc pulses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>data</strong> &#8211; binary sequence which is going to be mapped</li>
+<li><strong>b_rate</strong> &#8211; bit rate of the transmitted bit-stream</li>
+<li><strong>args</strong> &#8211; optional arguments, see the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tp</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of a single symbol</td>
+</tr>
+<tr class="row-odd"><td>td</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>delay of the signal with reference to the origin
+of the time axis</td>
+</tr>
+<tr class="row-even"><td>pw</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of the sinc - main lobe</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Baseband signal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="constallation_mappers.sinc_qpsk_map">
+<code class="descclassname">constallation_mappers.</code><code class="descname">sinc_qpsk_map</code><span class="sig-paren">(</span><em>t</em>, <em>data</em>, <em>s_rate</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/constallation_mappers.html#sinc_qpsk_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#constallation_mappers.sinc_qpsk_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a baseband signal to modulate with QPSK and sinc pulses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>data</strong> &#8211; binary sequence which is going to be mapped</li>
+<li><strong>s_rate</strong> &#8211; symbol rate of the transmitted baseband signal</li>
+<li><strong>args</strong> &#8211; optional arguments, see the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tp</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of a single symbol</td>
+</tr>
+<tr class="row-odd"><td>td</td>
+<td>positive
+float</td>
+<td>0</td>
+<td>delay of the signal with reference to the origin
+of the time axis</td>
+</tr>
+<tr class="row-even"><td>pw</td>
+<td>positive
+float</td>
+<td>1/b_rate</td>
+<td>pulse width of the sinc - main lobe</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Baseband signal</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-up_convertors">
+<span id="modulators-up-convertors-module"></span><h2>modulators.up_convertors module<a class="headerlink" href="#module-up_convertors" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="up_convertors.quad_mod">
+<code class="descclassname">up_convertors.</code><code class="descname">quad_mod</code><span class="sig-paren">(</span><em>bb</em>, <em>t</em>, <em>f0</em>, <em>p0</em>, <em>pE</em>, <em>jtr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/up_convertors.html#quad_mod"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#up_convertors.quad_mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quadrature modulator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bb</strong> &#8211; baseband signal, complex</li>
+<li><strong>t</strong> &#8211; time axis vector</li>
+<li><strong>f0</strong> &#8211; carrier frequecy of real signal</li>
+<li><strong>p0</strong> &#8211; starting phase of the LO signal (phase disbalance)</li>
+<li><strong>pE</strong> &#8211; phase error between LO and LO+pi/2 signals</li>
+<li><strong>jtr</strong> &#8211; sampling jitter (percent of sample period)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">passband signal modulated</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Modulators Package</a><ul>
+<li><a class="reference internal" href="#module-constallation_mappers">modulators.constallation_mappers module</a></li>
+<li><a class="reference internal" href="#module-up_convertors">modulators.up_convertors module</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">&lt;no title&gt;</a><ul>
+      <li>Previous: <a href="siggens.html" title="previous chapter">Siggens Package</a></li>
+      <li>Next: <a href="filters.html" title="next chapter">Filters Package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/modulators.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Petr Bojda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/modulators.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

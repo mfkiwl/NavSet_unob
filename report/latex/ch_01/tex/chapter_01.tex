@@ -1,0 +1,18 @@
+% ********************************** CHAPTER 1 source ***********************************************
+\section{Úvod}
+
+
+\marginpar{\textcolor{txt_blue}{Hlavní cíl zprávy}} 
+Zpráva vzniká na podnět výzkumného týmu Katedry Leteckých elektrotechnických systémů k podpoře výzkumného úkolu v oblasti terestriálních navigačních systémů s rozprostřeným spektrem. Cílem je nalézt vhodnou strukturu a parametry signálu tak, aby co nejlépe vyhověl požadavkům na celkový systém. V této fázi bude důraz kladen zejména na co nejlepší autokorelační vlastnosti signálu tak, aby bylo dosaženo co nejpřesnější synchronizace, resp. měření časového zpoždění.
+
+\marginpar{\textcolor{txt_blue}{Sekundární cíl zprávy}} 
+Dalším důvodem ke vzniku této zprávy je snaha demonstrovat, případně i pomoci s přípravou výuky v oblasti digitálních rádiových systémů. Pozornost je věnována hlavně moderním přístupům k návrhu, analýze, verifikaci a implementaci jednotlivých částí digitálního rádiového systému na bázi softwarově definovaného rádia (SDR). Nedílnou součástí zprávy jsou ucelené bloky softwaru (knihovny a aplikace) vytvořené tak, aby jednak plnily požadovanou funkci v rámci návrhu systému, ale zároveň aby dostatečně srozumitelně demonstrovaly způsob psaní daného typu programu a jeho použití. 
+
+\marginpar{\textcolor{txt_blue}{Použité prostředky}} 
+Zpráva vznikla jako komentovaný popis a dokumentace návrhu digitálního rádiového systému. Zahrnuje základní kroky návrhu - simulaci, testování (verifikaci) a nakonec i finální implementaci. Cílovou platformou je SDR, tudíž lze předpokládat, že funkce rádiového systému bude popsána, definována a implementována formou bloků software. Veškeré softwarové nástroje a prostředky použité při zpracování této zprávy jsou v kategorii "Open-Source Software License", zejména BSD licence v případě simulačních nástrojů a GNU GPL v případě implementačních nástrojů. Textová část je editována v systému Latex. Jednotlivé práce byly odvedeny na počítačích s operačním systémem Linux, distribuce Ubuntu. Nebyly použity žádné softwarové nástroje podléhající komerční licenci.
+
+K simulaci je využit systém knihoven v jazyce Python, zejména pak knihovny NumPy, Matplotlib a SciPy. S využitím funkcí těchto knihoven byly vytvořeny knihovny vlastních funkcí ke generování signálů, jejich modulace v základním pásmu (baseband), jejich konverze do vyššího kmitočtového pásma (up-convertor), filtrace, tvarování impulzu s ohledem na minimalizaci mezisymbolové interference při přenosu signálu kanálem s omezeným kmitočtovým pásmem (ISI - Inter-Symbol Interference) a další. Jak bylo uvedeno výše, všechny simulace jsou psány v programovacím jazyce Python.
+
+Prvky digitálního rádiového systému jsou zkoušeny v SDR E310 Ettus a/nebo s pomocí levného USB přijímače DVB-TV signnálu s čipem RTL2832U. Implementace je provedena pomocí softwarového balíku GNU Radio.
+
+%\lstinputlisting[language=Python]{./ch_01/src/testbed.py}

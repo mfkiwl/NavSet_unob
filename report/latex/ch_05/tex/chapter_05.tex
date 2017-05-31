@@ -1,0 +1,147 @@
+% ********************************** CHAPTER 5 source ***********************************************
+\section{Simulace - popis vytvořených funkcí}
+
+Veškeré simulace byly vytvořeny v jazyce Python, variantě 3.5.2. s využitím nástrojů knihoven Matplotlib 1.5.3, NumPy 1.11.1 a SciPy 0.18.1, vše instalováno v rámci balíku Anaconda 4.2.0. Simulace byly napsány, vyzkoušeny a provozovány na počítači s operačním systémem Linux Ubuntu 16.04.
+
+Vytvořené funkce simulací jsou sdruženy do několika samostatných souborů s koncovkou \texttt{.py} a umístěné v podadresářích uvnitř samostatného adresáře \texttt{numpy}. Členění do podadresářů je podle logické a funkční příslušnosti. Dále hlavní adresář \texttt{numpy} obsahuje řadu příkladů použití simulačních funkcí.
+
+Funkce ze souborů ve vnořených adresářích lze využít až poté, co jsou do skriptu hlavní úrovně importovány\footnote{Toto je pochopitelně dokumentovanou vlastností jazyka Python. Zde je tento fakt zmíněn pouze jako připomínka.}. 
+
+\subsection{Generátory signálu}
+
+Funkce zde popsané jsou umístěny v podadresáři \texttt{siggens}. Patří k základním prostředkům modulací -- generují signál požadovaného tvaru a parametrů a to jak v podobě základní (jediný, neopakující se impulz), tak i ve variantě opakujících se impulzů obsahujících kód. 
+
+\subsubsection{Jednoduché impulzy}
+Funkce, které byly vytvořeny proto, aby generovaly jediný a neopakující se impulz jsou sdruženy v souboru \texttt{one\_pulse.py}. Mohou sloužit jednak k prezentaci impulzu daného tvaru a jeho vlastností, zároveň jsou ale základem pro funkce, které spojují jednotlivé imulzy do jejich posloupností.
+
+\paragraph{Funkce \texttt{rect\_p} - obdélníkový impulz}
+Funkce, viz. listing \ref{lst_rectp}, generuje jednoduchý obdélníkový impulz. Vstupními parametry jsou $t_{START}$ a $t_{END}$, tedy okamžik začátku a konce impulzu v rámci časové osy $t$. Výstupem funkce je vektor $p$ vzorků impulzu odpovídajících vzorkovacím okmžikům definovaných vstupním vektorem $t$.
+
+\lstinputlisting[language=Python, caption={Generátor jednorázového obdélníkového impulzu} ,label=lst_rectp]{./ch_05/src/rect.py}
+
+\paragraph{Funkce \texttt{sinc\_p} - $sinc(x)$ impulz}
+Funkce, viz. listing \ref{lst_sincp}, generuje jednoduchý sinc impulz. Vstupními parametry jsou $t_{0}$ a $T_{B}$, tedy střed impulzu v rámci časové osy $t$ a šířka hlavního laloku $T_B$. Výstupem funkce je vektor $p$ vzorků impulzu odpovídajících vzorkovacím okmžikům definovaných vstupním vektorem $t$.
+
+\lstinputlisting[language=Python, caption={Generátor jednorázového impulzu tvaru $\frac{\sin(x)}{x}$} ,label=lst_sincp]{./ch_05/src/sinc.py}
+
+\paragraph{Funkce \texttt{rcos\_p} - Raised--cosine impulz}
+Funkce, viz. listing \ref{lst_rcosp}, generuje jednoduchý raised--cosine impulz. Vstupními parametry jsou $t_{0}$ a $T_{B}$, tedy střed impulzu v rámci časové osy $t$ a šířka hlavního laloku $T_B$. Výstupem funkce je vektor $p$ vzorků impulzu odpovídajících vzorkovacím okmžikům definovaných vstupním vektorem $t$.
+
+\lstinputlisting[language=Python, caption={Generátor jednorázového impulzu tvaru raised-cosine} ,label=lst_rcosp]{./ch_05/src/rcos.py}
+
+\subsubsection{Posloupnosti impulzů}
+
+Funkce, které byly vytvořeny proto, aby generovaly posloupnost impulzů různého tvaru jsou sdruženy v souboru \texttt{train\_pulse.py}. Jsou napsány tak, aby jednak generovaly impulz požadovaného tvaru několikrát opakovaně v průběhu časové osy cané vektorem $t$. Dále mohou zahrnout i kódování - impulz je nebo není na daném časovém úseku přítomen, podle toho, je-li příslušný bit kódové posloupnosti roven logické jedničce nebo nule. 
+
+\paragraph{Funkce \texttt{rect\_tr} - obdélníkový impulz}
+Funkce, viz. listing \ref{lst_recttr}, generuje posloupnost obdélníkových impulzů. Vstupními parametry jsou délka impulzu $t_{p}$, délka mezery mezi impulzy $t_{s}$, a zpoždění celé posloupnosti -- mezera mezi začátkem časové osy $t$ a začátkem prvního impulzu. Dále je vstupem vektor logických hodnot $code$. Ten určuje jednak kódovou posloupnost -- tzn. přítomnost nebo nepřítomnost daného impulzu v rámci celé řady impulzů. Dále počet bitů posloupnosti $code$ určuje počet impulzů výsledného signálu.
+
+Výstupem funkce je vektor $x$ vzorků impulzů odpovídajících vzorkovacím okmžikům definovaných vstupním vektorem $t$.
+
+\lstinputlisting[language=Python, caption={Generátor posloupnosti obdélníkových impulzů} ,label=lst_recttr]{./ch_05/src/TR_rect.py}
+
+\paragraph{Funkce \texttt{sinc\_tr} - $sinc(x)$ impulz}
+Funkce, viz. listing \ref{lst_sinctr}, generuje posloupnost impulzů $sinc(x)$. Vstupními parametry jsou délka impulzu $t_{p}$, délka mezery mezi impulzy $t_{s}$, a zpoždění celé posloupnosti -- mezera mezi začátkem časové osy $t$ a středem prvního impulzu. Dále je vstupem vektor logických hodnot $code$. Ten určuje jednak kódovou posloupnost -- tzn. přítomnost nebo nepřítomnost daného impulzu v rámci celé řady impulzů. Dále počet bitů posloupnosti $code$ určuje počet impulzů výsledného signálu.
+
+Parametr $pw$ je specifický pro tvar impulzu $sinc$. Určuje délku hlavního laloku funkce $sinc(x)$ uvnitř celého pulzu $t_p$. Jestliže parametr $t_p$ můžeme nastavit podle bitové rychlosti \textsl{bitrate}, potom samotný $sinc(x)$ impulz může být v rámci jednoho bitu kratší - užší.
+
+Výstupem funkce je vektor $x$ vzorků impulzů odpovídajících vzorkovacím okmžikům definovaných vstupním vektorem $t$.
+
+\lstinputlisting[language=Python, caption={Generátor posloupnosti impulzů $\frac{\sin(x)}{x}$} ,label=lst_sinctr]{./ch_05/src/TR_sinc.py}
+
+\paragraph{Funkce \texttt{rcos\_tr} - Raised--cosine impulz}
+Funkce, viz. listing \ref{lst_rcostr}, generuje posloupnost impulzů raised--cosine. Vstupními parametry jsou délka hlavního laloku impulzu $t_{p}$, délka mezery mezi impulzy $t_{s}$, a zpoždění celé posloupnosti -- mezera mezi začátkem časové osy $t$ a středem prvního impulzu. Dále je vstupem vektor logických hodnot $code$. Ten určuje jednak kódovou posloupnost -- tzn. přítomnost nebo nepřítomnost daného impulzu v rámci celé řady impulzů. Dále počet bitů posloupnosti $code$ určuje počet impulzů výsledného signálu.
+
+Parametr $pw$ je jako v případě $sinc$ impulzu specifický pro tvar impulzu raised--cosine. Určuje délku hlavního laloku funkce $sinc(x)$ uvnitř celého pulzu $t_p$. Jestliže parametr $t_p$ můžeme nastavit podle bitové rychlosti \textsl{bitrate}, potom samotný $sinc(x)$ impulz může být v rámci jednoho bitu kratší - užší.
+
+Parametr $alpha$ udává tzv. roll--off faktor funkce raised--cosine.
+
+Výstupem funkce je vektor $x$ vzorků impulzů odpovídajících vzorkovacím okmžikům definovaných vstupním vektorem $t$.
+
+\lstinputlisting[language=Python, caption={Generátor posloupnosti raised--cosine impulzů},label=lst_rcostr]{./ch_05/src/TR_rcos.py}
+
+\begin{boxit}
+Důležité: Parametr $t_d$ znamená u posloupnosti obdélníkových impulzů zpoždění posloupnosti vzhledem k náběžné hraně prvního pulzu, u posloupností impulzů tvaru $sinc(x)$ a raised--cosine vzhledem je ke středu hlavního laloku. To je potřeba respektovat, pokud se posloupnosti umisťují na časové ose společně.
+\end{boxit}
+
+\subsubsection{Generátory pseudonáhodných posloupností}
+Funkce, které byly vytvořeny proto, aby generovaly posloupnosti bitů --- generátory kódových a pseudonáhodných posloupností --- jsou sdruženy v souboru \texttt{PRN\_bitstreams.py}. Tyto funkce jsou vhodné jednak k testování digitálních rádiových systémů a potom k rozprostření kmitočtového spektra v systémech typu DSSS (z angl. \textsl{Direct Sequence Spread Spectrum}). 
+
+\paragraph{\texttt{tri\_seq}: Tří--bitový SSRG.}
+Funkce, viz. listing \ref{lst_triseq}, generuje bitovou posloupnost pomocí posuvného registru se zavedenými několika zpětnými vazbami SSRG\footnote{z angl. \textsl{Simple Shift Register Generator}}. V tomto konkrétním případě je použit generátor ve Fibonacciho tvaru s tří--bitovým registrem. Prvním vstupem funkce je parametr \texttt{init\_reg} logický vektor (3 bity), který určuje počáteční stav registru před startem procesu generování posloupnosti. Druhým vstupním parametrem je opět tříbitový logický vektor \texttt{fb\_reg}, který definuje zpětné vazby posuvného registru. Logická "0" v tomto vektoru znamená, že zpětná vazba není z daného bitu posuvného registru odvadana. Naopak logická "1" indikuje přítomnost zpětné vazby z příslušného bitu registru.
+
+Výstupem funkce je 10-ti bitový vektor logických hodnot - vygenerovaná bitová posloupnost.
+
+\lstinputlisting[language=Python, caption={Generátor jednoduché posloupnosti. 3-bitový SSRG, generována je posloupnost 10-ti bitů.} ,label=lst_triseq]{./ch_05/src/tri_seq.py}
+
+\paragraph{\texttt{gold\_seq}: Generátor Goldova kódu.}
+Funkce, viz. listing \ref{lst_goldseq}, generuje Goldovu pseudonáhodnou bitovou posloupnost, tzv. Goldův kód. Jsou použity dva 10--bitové posuvné registry se zavedenými vlastními několika zpětnými vazbami a se dvěma vazbami \textsl{vzájemnými}. Vzájemné vazby zabezpečují navázání registrů a spojení dvou nezávislých posloupností do jedné výsledné. Rozmístění vlastních zpětných vazeb jednotlivých registrů, stejně jako jejich počáteční stavy,  jsou v souladu se standardem družicového navigačního systému GPS tak, aby generované posloupnosti odpovídaly posloupnostem použitým v tomto systému.   
+
+Prvními dvěma vstupními parametry jsou umístění \textsl{vzájemných} vazeb \texttt{x1} a \texttt{x2}. Jedná se o celá čísla v rozsahu 0--9, která definují číslo bitu posuvného registru, z nějž je vazba odvedena\footnote{Jednotlivé kombinace \texttt{x1} a \texttt{x2} produkují unikátní posloupnost. Standard popisující systém GPS precizně definuje konkrétní kombinace pro kódy petřící jednotlivým družicím a jiným typům vysílačů v systému (např. družice SBAS, pseudolity a jiné)}.  Třetím vstupním parametrem je opět celé číslo \texttt{N\_codes}, které určuje počet period kódu vygenerovaných na výstupu\footnote{Jedna perioda Goldovy posloupnosti obsahuje 1023 bitů.}. 
+
+Výstupem funkce je vektor logických hodnot o délce $(N_{codes} \cdot 1023)$ -- vygenerovaných \texttt{N\_codes} period  Goldovy  posloupnosti.
+
+\lstinputlisting[language=Python, caption={Generátor Goldovy posloupnosti.} ,label=lst_goldseq]{./ch_05/src/gold_seq.py}
+
+\subsection{Modulátory}
+V této části jsou popisovány funkce uskutečňující modulace signálu --- tvarování komplexního signálu v základním pásmu a jeho transformaci do vyšších kmitočtů - konverzi do tzv., \textsl{passband}u. Funkce jsou umístěny v podadresáři \texttt{modulators}.
+
+
+\subsubsection{Tvarovače signálu v základním pásmu}
+V základním pásmu --- \textsl{baseband}u --- je potřeba vytvořit komplexní signál, složený ze symfázní (I) a kvadraturní (Q) složky. Aktuální úrovně těchto dvou složek definují okamžitou fázi a amplitudu signálu v \textsl{passband}u --- tedy na výstupu \textsl{Up--Convertoru}, potažmo celého vysílače. 
+
+Zde jsou popisovány funkce, vytvořené k tvarování signálu základního pásma. Jsou sdruženy v souboru \texttt{constallation\_mappers.py}. Na základě vstupní bitové posloupnosti -- dat -- je tvarován výstupní komplexní signál $I + jQ$ jednak podle požadované výsledné digitální modulace a také podle požadovanéhjo tvaru impulzu.
+ 
+\paragraph{\texttt{rect\_bpsk\_map}: BPSK modulace s obdélníkovým impulzem.}
+Funkce tvaruje komlexní signál základního pásma pro modulaci BPSK s obdélníkovým impulzem. 
+Vstupem je časová osa \texttt{t}, bitová posloupnost (vektor logických hodnot) \texttt{data}, která bude namodulována, požadovaná bitová rychlost \texttt{b\_rate} a volitelně parametry výstupního signálu:
+\begin{itemize}
+\item \texttt{tp} je hodnota $t_p$, šířka pulzu (bitu). Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_p = \frac{1}{b\_rate}$.
+\item \texttt{td} je hodnota $t_d$, zpoždění posloupnosti od počátku časové osy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_d = 0$.
+\item \texttt{ts} je hodnota $t_s$, mezera mezi impulzy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_s = 0$.
+\end{itemize}
+
+V případě BPSK je kvadraturní signál konstantní, roven nule; symfázní signál nabývá hodnoty 1 při aktuální hodnotě \texttt{data} rovné logické $1$ a hodnoty -1, pokud je daný bit vektoru \texttt{data} roven logické $0$.   
+
+\paragraph{\texttt{rect\_qpsk\_map}: QPSK modulace s obdélníkovým impulzem.}
+Funkce tvaruje komlexní signál základního pásma pro modulaci QPSK s obdélníkovým impulzem. 
+Vstupem je časová osa \texttt{t}, bitová posloupnost (vektor logických hodnot) \texttt{data}, která bude namodulována, požadovaná symbolová rychlost \texttt{s\_rate} a volitelně parametry výstupního signálu:
+\begin{itemize}
+\item \texttt{tp} je hodnota $t_p$, šířka pulzu (symbolu). Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_p = \frac{1}{s\_rate}$.
+\item \texttt{td} je hodnota $t_d$, zpoždění posloupnosti od počátku časové osy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_d = 0$.
+\item \texttt{ts} je hodnota $t_s$, mezera mezi impulzy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_s = 0$.
+\end{itemize}
+
+Modulace QPSK přenáší v jednom symbolu dva datové bity. Proto je datová posloupnost nejprve rozdělena na dvojice (data jsou přeskupeny do matice \texttt{data\_2s} o dvou sloupcích). Pokud počet bitů v původním vstupním vektoru \texttt{data} není sudý, je doplněna nula. \textsl{Baseband} signál modulace QPSK je následně tvrován tak, že symfázní signál nabývá hodnoty 1, resp. -1 pro aktuální hodnoty logické $1$, resp. $0$ prvního bitu aktuální dvojice vstupních bitů (rozuměj aktuálního řádku matice \texttt{data\_2s}). Obdobně je tvarován i kvadraturní signál, ten ovšem vychází z druhého bitu daného řádku matice \texttt{data\_2s}.
+
+\paragraph{\texttt{sinc\_bpsk\_map}: BPSK modulace s impulzem tvaru $sinc(x)$.}
+Funkce tvaruje komlexní signál základního pásma pro modulaci BPSK s obdélníkovým impulzem. 
+Vstupem je časová osa \texttt{t}, bitová posloupnost (vektor logických hodnot) \texttt{data}, která bude namodulována, požadovaná bitová rychlost \texttt{b\_rate} a volitelně parametry výstupního signálu:
+\begin{itemize}
+\item \texttt{tp} je hodnota $t_p$, šířka pulzu (bitu). Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_p = \frac{1}{b\_rate}$.
+\item \texttt{td} je hodnota $t_d$, zpoždění posloupnosti od počátku časové osy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_d = 0$.
+\item \texttt{ts} je hodnota $t_s$, mezera mezi impulzy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_s = 0$.
+\end{itemize}
+
+V případě BPSK je kvadraturní signál konstantní, roven nule; symfázní signál nabývá hodnoty 1 při aktuální hodnotě \texttt{data} rovné logické $1$ a hodnoty -1, pokud je daný bit vektoru \texttt{data} roven logické $0$.   
+
+\paragraph{\texttt{sinc\_qpsk\_map}: QPSK modulace s obdélníkovým impulzem.}
+Funkce tvaruje komlexní signál základního pásma pro modulaci QPSK s obdélníkovým impulzem. 
+Vstupem je časová osa \texttt{t}, bitová posloupnost (vektor logických hodnot) \texttt{data}, která bude namodulována, požadovaná symbolová rychlost \texttt{s\_rate} a volitelně parametry výstupního signálu:
+\begin{itemize}
+\item \texttt{tp} je hodnota $t_p$, šířka pulzu (symbolu). Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_p = \frac{1}{s\_rate}$.
+\item \texttt{td} je hodnota $t_d$, zpoždění posloupnosti od počátku časové osy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_d = 0$.
+\item \texttt{ts} je hodnota $t_s$, mezera mezi impulzy. Pokud není tento parametr explicitně definován při volání funkce, je přednastaveno $t_s = 0$.
+\end{itemize}
+
+Modulace QPSK přenáší v jednom symbolu dva datové bity. Proto je datová posloupnost nejprve rozdělena na dvojice (data jsou přeskupeny do matice \texttt{data\_2s} o dvou sloupcích). Pokud počet bitů v původním vstupním vektoru \texttt{data} není sudý, je doplněna nula. \textsl{Baseband} signál modulace QPSK je následně tvrován tak, že symfázní signál nabývá hodnoty 1, resp. -1 pro aktuální hodnoty logické $1$, resp. $0$ prvního bitu aktuální dvojice vstupních bitů (rozuměj aktuálního řádku matice \texttt{data\_2s}). Obdobně je tvarován i kvadraturní signál, ten ovšem vychází z druhého bitu daného řádku matice \texttt{data\_2s}.
+
+\subsubsection{Up -- Converter}
+
+\subsection{Pomocné funkce}
+
+\subsection{Filtry}
+
+\subsubsection{Tvarovače impulzu}
+
+

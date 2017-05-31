@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>constallation_mappers &#8212; Tx_functions 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Tx_functions 0.1.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for constallation_mappers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions of the module **Constallation Mapper** produce baseband signals</span>
+<span class="sd">according to required passband modulations and shape of the pulse.</span>
+
+<span class="sd">At this moment available choices are BPSK or QPSK modulations and three</span>
+<span class="sd">different pulses - rectangular, sinus cardinale or raised cosine.</span>
+
+<span class="sd">Returned *baseband* signals are numpy arrays of the same size as the time axis *t*.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../../srcpy&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">siggens</span> <span class="k">import</span> <span class="n">train_pulse</span> <span class="k">as</span> <span class="n">gen</span>
+
+<div class="viewcode-block" id="rect_bpsk_map"><a class="viewcode-back" href="../modulators.html#constallation_mappers.rect_bpsk_map">[docs]</a><span class="k">def</span> <span class="nf">rect_bpsk_map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">b_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a baseband signal for a BPSK modulation with rectangular pulses</span>
+
+<span class="sd">    :param t: time axis</span>
+<span class="sd">    :param data: binary sequence which is going to be mapped</span>
+<span class="sd">    :param b_rate: bit rate of the transmitted bit-stream</span>
+<span class="sd">    :param args: optional arguments, see the table.</span>
+
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word | Possible    | Default   | Description                                       |</span>
+<span class="sd">    |          | values      |           |                                                   |</span>
+<span class="sd">    +==========+=============+===========+===================================================+</span>
+<span class="sd">    | tp       | positive    |           |  pulse width of a single symbol                   |</span>
+<span class="sd">    |          | float       | 1/b_rate  |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | td       | positive    |           |  delay of the signal with reference to the origin |</span>
+<span class="sd">    |          | float       |   0       |  of the time axis                                 |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | ts       | positive    |   0       |  the space between pulses in a stream             |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: Baseband signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;tp&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">b_rate</span>  <span class="c1"># pulse width of a single symbol</span>
+
+    <span class="k">if</span> <span class="s1">&#39;td&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;td&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># signal starts at time td = 0s</span>
+
+    <span class="k">if</span> <span class="s1">&#39;ts&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the space between pulses in a stream is ts = 0s</span>
+
+    <span class="c1"># Baseband signal generator</span>
+    <span class="n">i_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">rect_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">q_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">i_bb</span> <span class="o">+</span> <span class="n">q_bb</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rect_qpsk_map"><a class="viewcode-back" href="../modulators.html#constallation_mappers.rect_qpsk_map">[docs]</a><span class="k">def</span> <span class="nf">rect_qpsk_map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a baseband signal to modulate with QPSK and rectangular pulses</span>
+
+<span class="sd">    :param t: time axis</span>
+<span class="sd">    :param data: binary sequence which is going to be mapped</span>
+<span class="sd">    :param s_rate: symbol rate of the transmitted baseband signal</span>
+<span class="sd">    :param args: optional arguments, see the table.</span>
+
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word | Possible    | Default   | Description                                       |</span>
+<span class="sd">    |          | values      |           |                                                   |</span>
+<span class="sd">    +==========+=============+===========+===================================================+</span>
+<span class="sd">    | tp       | positive    |           |  pulse width of a single symbol                   |</span>
+<span class="sd">    |          | float       | 1/b_rate  |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | td       | positive    |           |  delay of the signal with reference to the origin |</span>
+<span class="sd">    |          | float       |   0       |  of the time axis                                 |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | ts       | positive    |   0       |  the space between pulses in a stream             |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: Baseband signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tup</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># number of bits in one tuple</span>
+    <span class="n">n_d</span> <span class="o">=</span> <span class="n">tup</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="n">tup</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_d</span><span class="p">))</span>  <span class="c1"># appends zero to get odd number of bits</span>
+    <span class="n">data_2s</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">tup</span><span class="p">)</span>  <span class="c1"># reshaping the data vector into matrix</span>
+    <span class="n">data_2s</span> <span class="o">=</span> <span class="n">data_2s</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1">## Baseband signal parameters</span>
+    <span class="k">if</span> <span class="s1">&#39;tp&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">s_rate</span>  <span class="c1"># pulse width of a single symbol</span>
+
+    <span class="k">if</span> <span class="s1">&#39;td&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;td&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># signal starts at time td = 0s</span>
+
+    <span class="k">if</span> <span class="s1">&#39;ts&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the space between pulses in a stream is ts = 0s</span>
+
+    <span class="c1"># Baseband signal generator</span>
+    <span class="n">i_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">rect_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data_2s</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">q_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">rect_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data_2s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">i_bb</span> <span class="o">+</span> <span class="n">q_bb</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
+
+<span class="c1"># BPSK mapper </span>
+<div class="viewcode-block" id="sinc_bpsk_map"><a class="viewcode-back" href="../modulators.html#constallation_mappers.sinc_bpsk_map">[docs]</a><span class="k">def</span> <span class="nf">sinc_bpsk_map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">b_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a baseband signal to modulate with BPSK and sinc pulses</span>
+
+<span class="sd">    :param t: time axis</span>
+<span class="sd">    :param data: binary sequence which is going to be mapped</span>
+<span class="sd">    :param b_rate: bit rate of the transmitted bit-stream</span>
+<span class="sd">    :param args: optional arguments, see the table.</span>
+
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word | Possible    | Default   | Description                                       |</span>
+<span class="sd">    |          | values      |           |                                                   |</span>
+<span class="sd">    +==========+=============+===========+===================================================+</span>
+<span class="sd">    | tp       | positive    |           |  pulse width of a single symbol                   |</span>
+<span class="sd">    |          | float       | 1/b_rate  |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | td       | positive    |           |  delay of the signal with reference to the origin |</span>
+<span class="sd">    |          | float       |   0       |  of the time axis                                 |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | pw       | positive    | 1/b_rate  |  pulse width of the sinc - main lobe              |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: Baseband signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;tp&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">b_rate</span>  <span class="c1"># pulse width of a single symbol</span>
+
+    <span class="k">if</span> <span class="s1">&#39;td&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;td&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># signal starts at time td = 0s</span>
+
+    <span class="k">if</span> <span class="s1">&#39;pw&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;pw&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">b_rate</span>  <span class="c1"># pulse width of the sinc - main lobe</span>
+
+    <span class="c1"># Baseband signal generator</span>
+    <span class="n">i_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">sinc_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">pw</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">q_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">i_bb</span> <span class="o">+</span> <span class="n">q_bb</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sinc_qpsk_map"><a class="viewcode-back" href="../modulators.html#constallation_mappers.sinc_qpsk_map">[docs]</a><span class="k">def</span> <span class="nf">sinc_qpsk_map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a baseband signal to modulate with QPSK and sinc pulses</span>
+
+<span class="sd">    :param t: time axis</span>
+<span class="sd">    :param data: binary sequence which is going to be mapped</span>
+<span class="sd">    :param s_rate: symbol rate of the transmitted baseband signal</span>
+<span class="sd">    :param args: optional arguments, see the table.</span>
+
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word | Possible    | Default   | Description                                       |</span>
+<span class="sd">    |          | values      |           |                                                   |</span>
+<span class="sd">    +==========+=============+===========+===================================================+</span>
+<span class="sd">    | tp       | positive    |           |  pulse width of a single symbol                   |</span>
+<span class="sd">    |          | float       | 1/b_rate  |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | td       | positive    |           |  delay of the signal with reference to the origin |</span>
+<span class="sd">    |          | float       |   0       |  of the time axis                                 |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | pw       | positive    | 1/b_rate  |  pulse width of the sinc - main lobe              |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: Baseband signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tup</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># number of bits in one tuple</span>
+    <span class="n">n_d</span> <span class="o">=</span> <span class="n">tup</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="n">tup</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_d</span><span class="p">))</span>  <span class="c1"># appends zeros to get the proper shape</span>
+    <span class="n">data_2s</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">tup</span><span class="p">)</span>  <span class="c1"># reshaping the data vector into matrix</span>
+    <span class="n">data_2s</span> <span class="o">=</span> <span class="n">data_2s</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1">## Baseband signal parameters</span>
+    <span class="k">if</span> <span class="s1">&#39;tp&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">s_rate</span>  <span class="c1"># pulse width of a single symbol</span>
+
+    <span class="k">if</span> <span class="s1">&#39;td&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;td&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># signal starts at time td = 0s</span>
+
+    <span class="k">if</span> <span class="s1">&#39;pw&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;pw&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">s_rate</span>  <span class="c1"># pulse width of the sinc - main lobe</span>
+
+    <span class="c1"># Baseband signal generator</span>
+    <span class="n">i_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">sinc_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data_2s</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pw</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">q_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">sinc_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data_2s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">pw</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">i_bb</span> <span class="o">+</span> <span class="n">q_bb</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rcos_bpsk_map"><a class="viewcode-back" href="../modulators.html#constallation_mappers.rcos_bpsk_map">[docs]</a><span class="k">def</span> <span class="nf">rcos_bpsk_map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">b_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a baseband signal to modulate with BPSK and raised cosine pulses</span>
+
+<span class="sd">    :param t: time axis</span>
+<span class="sd">    :param data: binary sequence which is going to be mapped</span>
+<span class="sd">    :param b_rate: bit rate of the transmitted bit-stream</span>
+<span class="sd">    :param args: optional arguments, see the table.</span>
+
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word | Possible    | Default   | Description                                       |</span>
+<span class="sd">    |          | values      |           |                                                   |</span>
+<span class="sd">    +==========+=============+===========+===================================================+</span>
+<span class="sd">    | tp       | positive    |           |  pulse width of a single symbol                   |</span>
+<span class="sd">    |          | float       | 1/b_rate  |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | td       | positive    |           |  delay of the signal with reference to the origin |</span>
+<span class="sd">    |          | float       |   0       |  of the time axis                                 |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | pw       | positive    | 1/b_rate  |  pulse width of the sinc - main lobe              |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | alpha    | positive    |   0.8     |  roll-off factor                                  |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: Baseband signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;tp&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">b_rate</span>  <span class="c1"># pulse width of a single symbol</span>
+
+    <span class="k">if</span> <span class="s1">&#39;td&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;td&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># signal starts at time td = 0s</span>
+
+    <span class="k">if</span> <span class="s1">&#39;pw&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;pw&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">b_rate</span>  <span class="c1"># pulse width of the sinc - main lobe</span>
+
+    <span class="k">if</span> <span class="s1">&#39;alpha&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="o">.</span><span class="mi">8</span>  <span class="c1"># roll-off factor</span>
+
+    <span class="c1"># Baseband signal generator</span>
+    <span class="n">i_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">rcos_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">pw</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">q_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">i_bb</span> <span class="o">+</span> <span class="n">q_bb</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rcos_qpsk_map"><a class="viewcode-back" href="../modulators.html#constallation_mappers.rcos_qpsk_map">[docs]</a><span class="k">def</span> <span class="nf">rcos_qpsk_map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">s_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a baseband signal to modulate with QPSK and raised cosine pulses</span>
+
+<span class="sd">    :param t: time axis</span>
+<span class="sd">    :param data: binary sequence which is going to be mapped</span>
+<span class="sd">    :param s_rate: symbol rate of the transmitted baseband signal</span>
+<span class="sd">    :param args: optional arguments, see the table.</span>
+
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | Key word | Possible    | Default   | Description                                       |</span>
+<span class="sd">    |          | values      |           |                                                   |</span>
+<span class="sd">    +==========+=============+===========+===================================================+</span>
+<span class="sd">    | tp       | positive    |           |  pulse width of a single symbol                   |</span>
+<span class="sd">    |          | float       | 1/b_rate  |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | td       | positive    |           |  delay of the signal with reference to the origin |</span>
+<span class="sd">    |          | float       |   0       |  of the time axis                                 |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | pw       | positive    | 1/b_rate  |  pulse width of the sinc - main lobe              |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+<span class="sd">    | alpha    | positive    |   0.8     |  roll-off factor                                  |</span>
+<span class="sd">    |          | float       |           |                                                   |</span>
+<span class="sd">    +----------+-------------+-----------+---------------------------------------------------+</span>
+
+<span class="sd">    :return: Baseband signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tup</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># number of bits in one tuple</span>
+    <span class="n">n_d</span> <span class="o">=</span> <span class="n">tup</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="n">tup</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_d</span><span class="p">))</span>  <span class="c1"># appends zeros to get the proper shape</span>
+    <span class="n">data_2s</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">tup</span><span class="p">)</span>  <span class="c1"># reshaping the data vector into matrix</span>
+    <span class="n">data_2s</span> <span class="o">=</span> <span class="n">data_2s</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1">## Baseband signal parameters</span>
+    <span class="k">if</span> <span class="s1">&#39;tp&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tp&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">s_rate</span>  <span class="c1"># pulse width of a single symbol</span>
+
+    <span class="k">if</span> <span class="s1">&#39;td&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;td&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># signal starts at time td = 0s</span>
+
+    <span class="k">if</span> <span class="s1">&#39;pw&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;pw&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">s_rate</span>  <span class="c1"># pulse width of the sinc - main lobe</span>
+
+    <span class="k">if</span> <span class="s1">&#39;alpha&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="o">.</span><span class="mi">8</span>  <span class="c1"># roll-off factor</span>
+
+    <span class="c1"># Baseband signal generator</span>
+    <span class="n">i_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">rcos_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data_2s</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pw</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">q_bb</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gen</span><span class="o">.</span><span class="n">rcos_tr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">data_2s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">pw</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">i_bb</span> <span class="o">+</span> <span class="n">q_bb</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bb</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Petr Bojda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

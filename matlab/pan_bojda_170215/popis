@@ -1,0 +1,11 @@
+data_prijimac_gold.m vyčtení dat + generování masek goldů
+
+dll_real_code.m časoměrný algoritmus
+kod1 fáze selektoru generatoru PRN 2+6
+kod2 fáze selektoru generatoru PRN 3+7
+
+graf_pruměry průměrná hodnota korelace za dobu intergr2
+dt(1,1) rozdíl posuvu generovaných ků ve vzorcích
+
+main4.m
+kód z dll_real_code.m bez diskriminátor DLL v cyklu je posouván počátek generování kódu, v proměnné korelace očekávám korelační průběh

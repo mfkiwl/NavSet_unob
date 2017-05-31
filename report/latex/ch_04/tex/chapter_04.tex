@@ -1,0 +1,22 @@
+% ********************************** CHAPTER 4 source ***********************************************
+\section{Generátor rádiového signálu}
+
+
+\marginpar{\textcolor{txt_blue}{up-convertor}} 
+V digitálním rádiovém systému slouží blok "Up-Convertor" k transformaci připraveného signálu v základním pásmu (baseband) do kmitočtového pásma vhodného k rádiovému přenosu. řekněme, že daný krok lze nazvat i "modulací nosné".
+
+V tomto projektu bude vytvořen Up-convertor pro účely simulace. Ve vlastní hardwarové implementaci slouží k přeměně samotné rádio, čili fyzicky RF-frontend.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Diff Equation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Realizace Up-convertoru - Python}
+\marginpar{\textcolor{txt_blue}{Rozbor}} 
+Let's start with a time-domain first to derive the differential equation from a \textsl{free-body diagram}. We will use the second Newton's law, setting the mass $M=0$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Time Response %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Použití bloku USRP v GNU Radio}
+We are required to derive both natural and step response.
+
+
+

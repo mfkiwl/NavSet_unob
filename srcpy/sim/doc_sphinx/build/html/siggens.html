@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Siggens Package &#8212; Tx_functions 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Tx_functions 0.1.1 documentation" href="index.html" />
+    <link rel="up" title="&lt;no title&gt;" href="modules.html" />
+    <link rel="next" title="Modulators Package" href="modulators.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="siggens-package">
+<h1>Siggens Package<a class="headerlink" href="#siggens-package" title="Permalink to this headline">¶</a></h1>
+<p>The package contains three modules.
+1. <strong>one_pulse</strong> - to produce a single pulse,
+2. <strong>train_pulse</strong> - to produce a train of pulses,
+3. <strong>PRN_bitstreams</strong> - to generate various binary sequencies.</p>
+<div class="section" id="module-one_pulse">
+<span id="siggens-one-pulse-module"></span><h2>siggens.one_pulse module<a class="headerlink" href="#module-one_pulse" title="Permalink to this headline">¶</a></h2>
+<p>Module provides functions to generate single pulses of various shapes and parameters. Functions accept a time
+axis as an input argument. It suppose to be a NumPy array containing a row of time values defining moments
+of sampling. Returned is a baseband signal which is a NumPy array of the same length as the time axis
+containing samples of the signal.</p>
+<dl class="function">
+<dt id="one_pulse.rcos_p">
+<code class="descclassname">one_pulse.</code><code class="descname">rcos_p</code><span class="sig-paren">(</span><em>t</em>, <em>t0</em>, <em>Tb</em>, <em>alpha</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/one_pulse.html#rcos_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#one_pulse.rcos_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a single raised cosine pulse</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>t0</strong> &#8211; center point of the pulse</li>
+<li><strong>Tb</strong> &#8211; pulse width in term of inverted frequency bandwidth</li>
+<li><strong>alpha</strong> &#8211; roll-off factor, float values in between 0 and 1.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">baseband signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<p>A single raised-cosine pulse with its maximum at the time 0.5 sec. Pulse width is 0.2 sec,
+roll-off factor 0.8. The sampling rate is 1 kHz :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">one_pulse</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Tsampl</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Tsampl</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">sinc_p</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="one_pulse.rect_p">
+<code class="descclassname">one_pulse.</code><code class="descname">rect_p</code><span class="sig-paren">(</span><em>t</em>, <em>t_start</em>, <em>t_end</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/one_pulse.html#rect_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#one_pulse.rect_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a single rectangular pulse</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>t_start</strong> &#8211; time of the leading edge of the pulse</li>
+<li><strong>t_end</strong> &#8211; time of the trailing edge of the pulse</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">baseband signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<p>A single rectangular pulse which starts at the time 0.1 sec and stops at 0.3 sec.
+The sampling rate is 1 kHz :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">one_pulse</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Tsampl</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Tsampl</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">rect_p</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="one_pulse.sinc_p">
+<code class="descclassname">one_pulse.</code><code class="descname">sinc_p</code><span class="sig-paren">(</span><em>t</em>, <em>t0</em>, <em>Tb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/one_pulse.html#sinc_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#one_pulse.sinc_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a single cardinal sin pulse</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>t0</strong> &#8211; center point of the pulse</li>
+<li><strong>Tb</strong> &#8211; pulse width in term of inverted frequency bandwidth</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">baseband signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<p>A single sinc pulse with its maximum at the time 0.5 sec. Pulse width is 0.2 sec.
+The sampling rate is 1 kHz :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">one_pulse</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Tsampl</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Tsampl</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">sinc_p</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-train_pulse">
+<span id="siggens-train-pulse-module"></span><h2>siggens.train_pulse module<a class="headerlink" href="#module-train_pulse" title="Permalink to this headline">¶</a></h2>
+<p>Module provides sed are functions to generate trains of pulses of various shapes and parameters.
+Used are functions which generate single pulses.</p>
+<dl class="function">
+<dt id="train_pulse.rcos_tr">
+<code class="descclassname">train_pulse.</code><code class="descname">rcos_tr</code><span class="sig-paren">(</span><em>t</em>, <em>ts</em>, <em>td</em>, <em>code</em>, <em>pw</em>, <em>alpha</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/train_pulse.html#rcos_tr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_pulse.rcos_tr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a train of raised cosine pulses using the <em>one_pulse</em> function -&gt; &#8216;&#8217;rcos_p&#8217;&#8216;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>ts</strong> &#8211; spaces in between pulses</li>
+<li><strong>td</strong> &#8211; time delay, time between origin of the t axis and the center of the first pulse</li>
+<li><strong>code</strong> &#8211; binary sequence which will be coded</li>
+<li><strong>pw</strong> &#8211; pulse width</li>
+<li><strong>alpha</strong> &#8211; roll-off factor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">baseband signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="train_pulse.rect_tr">
+<code class="descclassname">train_pulse.</code><code class="descname">rect_tr</code><span class="sig-paren">(</span><em>t</em>, <em>tp</em>, <em>ts</em>, <em>td</em>, <em>code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/train_pulse.html#rect_tr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_pulse.rect_tr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a train of rectangular pulses using the <em>one_pulse</em> function -&gt; &#8216;&#8217;rect_p&#8217;&#8216;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>tp</strong> &#8211; pulse width</li>
+<li><strong>ts</strong> &#8211; spaces in between pulses</li>
+<li><strong>td</strong> &#8211; time delay, time between origin of the t axis and the first pulse rising edge</li>
+<li><strong>code</strong> &#8211; binary sequence which will be coded</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">baseband signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="train_pulse.sinc_tr">
+<code class="descclassname">train_pulse.</code><code class="descname">sinc_tr</code><span class="sig-paren">(</span><em>t</em>, <em>ts</em>, <em>td</em>, <em>code</em>, <em>pw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/train_pulse.html#sinc_tr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_pulse.sinc_tr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a train of cardinal sin pulses using the <em>one_pulse</em> function -&gt; &#8216;&#8217;sinc_p&#8217;&#8216;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; time axis</li>
+<li><strong>ts</strong> &#8211; spaces in between pulses</li>
+<li><strong>td</strong> &#8211; time delay, time between origin of the t axis and the center of the first pulse</li>
+<li><strong>code</strong> &#8211; binary sequence which will be coded</li>
+<li><strong>pw</strong> &#8211; pulse width</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">baseband signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-PRN_bitstreams">
+<span id="siggens-prn-bitstreams-module"></span><h2>siggens.PRN_bitstreams module<a class="headerlink" href="#module-PRN_bitstreams" title="Permalink to this headline">¶</a></h2>
+<p>Module contains a set of functions which produce binary sequences either pseudo-random
+or deterministic. Algorithms are developed based on the book <em>Spread Spectrum Systems for
+GNSS and Wireless Communications</em> by Jack K. Holmes.</p>
+<p>Returned binary sequences are numpy arrays of the type <em>bool</em>.</p>
+<dl class="function">
+<dt id="PRN_bitstreams.gold_seq">
+<code class="descclassname">PRN_bitstreams.</code><code class="descname">gold_seq</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PRN_bitstreams.html#gold_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PRN_bitstreams.gold_seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function generates <em>Gold&#8217;s binary sequence</em> using two 10-bits SSRGs <em>G1</em> and <em>G2</em> when
+each of which generates a <em>maximal length sequence</em> of the length <em>N = 2^10 - 1</em>.
+* G1 = x^10 + x^3
+* G2 = x^10 + x^9 + x^8 + x^6 + x^3 + x^2
+Both of the registers are initialized by a sequence <em>[1 1 1 1 1 1 1 1 1 1]</em>.</p>
+<p>The output sequence is an exclusive <em>OR</em> result of the G1 output and delayed G2 output. The
+delayed G2 output is obtained by the exclusive <em>OR</em> of the selected positions of the two taps
+defined by input arguments <strong>x1</strong> and <strong>x2</strong>.</p>
+<p>All the structure is developed according to the GPS standards &#8211; <em>Interface Control
+Document IS-GPS-200H</em> &#8211; C/A code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x1</strong> &#8211; the first selected position from the <em>G2</em></li>
+<li><strong>x2</strong> &#8211; the second selected position from the <em>G2</em></li>
+<li><strong>args</strong> &#8211; optional set of arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="11%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>no_bits</td>
+<td>positive
+integers</td>
+<td>1023</td>
+<td>number of bits generated for one period, full
+period of the Gold&#8217;s code contains 1023 bits</td>
+</tr>
+<tr class="row-odd"><td>no_periods</td>
+<td>positive
+integers</td>
+<td>1</td>
+<td>number of periods of the code
+being generated</td>
+</tr>
+<tr class="row-even"><td>verbosity</td>
+<td>boolean T/F</td>
+<td><em>False</em></td>
+<td><em>False</em> - nothing to be printed,
+<em>True</em> - the state of the shift register
+and feedbacks is being printed  for each cycle</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a binary sequence of the length &#8216;no_bits&#8217; x &#8216;no_periods&#8217; &#8211; the Gold&#8217;s code.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<p>Gold&#8217;s sequence generator being used to generate a PRN code of the satellite SV1. Returned is one
+period with a full length of 1023 bits. Generator in a silence mode (<a href="#id1"><span class="problematic" id="id2">*</span></a>verbosity*=False):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">PRN_bitstream</span> <span class="k">as</span> <span class="nn">prn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">prn</span><span class="o">.</span><span class="n">gold_seq</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And the same but 30 periods are generated in row:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">PRN_bitstream</span> <span class="k">as</span> <span class="nn">prn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">prn</span><span class="o">.</span><span class="n">gold_seq</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="n">no_periods</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Another example producing a PRN code of the satellite SV2. Returned is only a fragment of the period,
+first 100 bits of the code. Generator provides text output for each of the cycles to check internal
+state of its registers and feedbacks:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">PRN_bitstream</span> <span class="k">as</span> <span class="nn">prn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">prn</span><span class="o">.</span><span class="n">gold_seq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">no_bits</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">verbosity</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="PRN_bitstreams.ssrg">
+<code class="descclassname">PRN_bitstreams.</code><code class="descname">ssrg</code><span class="sig-paren">(</span><em>init_reg</em>, <em>fb_reg</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PRN_bitstreams.html#ssrg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PRN_bitstreams.ssrg" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function generates a binary sequence using structure of the <em>simple shift register generator</em>
+&#8211; SSRG &#8211; with M-bit shift register. The generator is in a Fibonacci form. The length of the shift
+register <em>M</em> is defined by the length of the register <em>init_reg</em> or <em>fb_reg</em>. Both are suppose to
+be of the same length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>init_reg</strong> &#8211; M-bit initialization sequence in the shift register. NumPy array <em>bool</em>.</li>
+<li><strong>fb_reg</strong> &#8211; M-bit Numpy <em>bool</em> array which defines feedbacks of the shift register. Log <em>1</em> means a feedback exists for an appropriate bit of the register.</li>
+<li><strong>args</strong> &#8211; optional set of arguments</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="16%" />
+<col width="13%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key word</th>
+<th class="head">Possible
+values</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>n_bits</td>
+<td>positive
+integers</td>
+<td>7</td>
+<td>length of the output sequence in bits</td>
+</tr>
+<tr class="row-odd"><td>verbosity</td>
+<td>boolean T/F</td>
+<td><em>False</em></td>
+<td><em>False</em> - nothing to be printed,
+<em>True</em> - the state of the shift register
+is being printed  for each cycle</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a binary sequence of the length &#8216;n-bits&#8217; (default 7 bits) &#8211; the output code.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<p>See, how to use the function to produce a 7-bits output sequence by the 3-bits SSRG with the feedback from the output of
+the first and the second bit of the shift register. The register is initialized by one log. <em>1</em> at
+the first bit (<em>numpy-array&#8217;s element [0]</em>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">PRN_bitstream</span> <span class="k">as</span> <span class="nn">prn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">prn</span><span class="o">.</span><span class="n">ssrg</span><span class="p">(</span><span class="n">init</span><span class="p">,</span><span class="n">fb</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Another example producing the output sequence with length of 50 bits and states of the shift register
+printed for each step:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">PRN_bitstream</span> <span class="k">as</span> <span class="nn">prn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>   <span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_seq</span> <span class="o">=</span> <span class="n">prn</span><span class="o">.</span><span class="n">ssrg</span><span class="p">(</span><span class="n">init</span><span class="p">,</span><span class="n">fb</span><span class="p">,</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">verbosity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Siggens Package</a><ul>
+<li><a class="reference internal" href="#module-one_pulse">siggens.one_pulse module</a></li>
+<li><a class="reference internal" href="#module-train_pulse">siggens.train_pulse module</a></li>
+<li><a class="reference internal" href="#module-PRN_bitstreams">siggens.PRN_bitstreams module</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">&lt;no title&gt;</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">&lt;no title&gt;</a></li>
+      <li>Next: <a href="modulators.html" title="next chapter">Modulators Package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/siggens.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Petr Bojda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/siggens.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,24 @@
+ 
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, 
+    minimum height=3em, minimum width=5em]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+%\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\begin{tikzpicture}[node distance=3cm,auto,>=latex']
+
+    \node [input, name=input] {};
+    \node [block, right of=input] (b_A) {Modulátor BB};
+	\node [block, right of=b_A,xshift=2cm] (b_B) {Tvarování impulzu};
+	\node [block, below of=b_B] (b_C) {Up-Convertor};
+	\node [block, left of=b_C,xshift=-2cm] (b_D) {Přenosový kanál};
+    \node [output, left of=b_D] (output) {};
+ 
+    \draw [draw,->] (input) -- node {$x_b(n)$} (b_A);
+	\draw [draw,->] (b_A) -- node {$x_{rect}(t)$} (b_B);
+	\draw [draw,->] (b_B) -- node {$x_{rcos}(t)$} (b_C);
+	\draw [draw,->] (b_C) -- node {$x_{RF}(t)$} (b_D);
+    \draw [->] (b_D) -- node {$x_{dist}(t)$} (output);
+
+\end{tikzpicture}
