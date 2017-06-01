@@ -109,14 +109,21 @@ def main(top_block_cls=tx_simple, options=None):
 	tb = top_block_cls()
 	tb.start()
 	
-	freq = tb.get_Gain_dB()
-	gain = tb.get_f0()
+	gain = tb.get_Gain_dB()
+	freq = tb.get_f0()
+	samples_per_symbol = tb.get_sps()
+	sample_rate = tb.get_samp_rate()
+	modulation = tb.get_qpsk_const()
 
-	# Print a nice banner with information on which host we are about to scan
+	# Print a nice banner with information on what are the current transmission
+	# parameters values and how to change them
 	print "-" * 60
-	print "Please wait, processing the keyboard input"
-	print "frequency is" , freq, "Hz"
+	print "Parameters of the transmitted signal:"
+	print "frequency is" , freq/1e6, "MHz"
 	print "gain is" , gain, "dB"
+	print "transmitted is ", samples_per_symbol, " samples per symbol"
+	print "sample rate is" , sample_rate
+	print "Modulation schema:" , modulation
 	print "-" * 60	
 
 	while True:
@@ -135,6 +142,26 @@ def main(top_block_cls=tx_simple, options=None):
 					print "Gain changed to:", gain
 				else:
 					print "Can't recognize received", param[0], "parameter."
+			elif len(param) == 1:
+				if param[0] == "f":
+					freq = tb.get_f0()
+					print "Frequency is:", freq/1e6, "MHz"
+				elif param[0] == "g":
+					gain = tb.get_Gain_dB()
+					print "Gain is: ", gain, "dB"
+				elif param[0] == "l":
+					# Print a nice banner with information on what are the current transmission
+					# parameters values and how to change them
+					print "-" * 60
+					print "Parameters of the transmitted signal:"
+					print "frequency is" , freq/1e6, "MHz"
+					print "gain is" , gain, "dB"
+					print "transmitted is ", samples_per_symbol, " samples per symbol"
+					print "sample rate is" , sample_rate
+					print "Modulation schema:" , modulation
+					print "-" * 60
+				else:
+					print "Can't recognize received", param[0], "parameter."
 			else:
 				print "Received", len(param), "parameters. Can't parse, try again."
 			pass			
@@ -145,12 +172,6 @@ def main(top_block_cls=tx_simple, options=None):
 		except KeyboardInterrupt:
 			print "You have pressed Ctrl+C, it is right time to finish ..."
 			break
-
-	print "Received was:", parameter_change
-	print "frequency is" , freq, "Hz"
-	print "gain is" , gain, "dB"
-	# Checking the time again
-
 
 	# Checking the time again
 	t2 = datetime.now()
