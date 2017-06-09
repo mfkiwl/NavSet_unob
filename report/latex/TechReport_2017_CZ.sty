@@ -1,4 +1,4 @@
-\ProvidesPackage{TechReport_2016_CZ}
+\ProvidesPackage{TechReport_2017_CZ}
 
 \usepackage{amsmath}
 \usepackage{mathrsfs}
@@ -59,22 +59,6 @@
 \chapterfont{\color{txt_red}}  % sets colour of chapters
 \sectionfont{\color{txt_red}}  % sets colour of sections
 
-
-%[xshift=-3.25in,yshift=-0.6in]
-\usepackage[placement=top,scale=1,opacity=0.8]{background}
-\backgroundsetup{contents={%
-    \begin{tikzpicture} [remember picture,overlay]
-    \node[xshift=-3.25in,yshift=-0.6in] at (current page.north west)
-      {\begin{tikzpicture}[remember picture, overlay]
-        \draw[fill=bgr_LightBlue] (0,0) rectangle
-          (\paperwidth,1.01in);
-        \node[anchor=east,xshift=.2\paperwidth,yshift=0.55in,rectangle,
-              rounded corners=10pt,inner sep=12pt,
-              fill=bgr_DarkBlue]
-              {\color{white}Technická zpráva};
-       \end{tikzpicture}
-      };
-   \end{tikzpicture}}}
 
 \newsavebox{\savepar}
 \newenvironment{boxit}{\begin{lrbox}{\savepar}

@@ -1,0 +1,20 @@
+% ********************************** CHAPTER 5 source ***********************************************
+\section{Implementace - popis vytvořených programů}
+
+Veškeré simulace byly vytvořeny v jazyce Python, variantě 3.5.2. s využitím nástrojů knihoven Matplotlib 1.5.3, NumPy 1.11.1 a SciPy 0.18.1, vše instalováno v rámci balíku Anaconda 4.2.0. Simulace byly napsány, vyzkoušeny a provozovány na počítači s operačním systémem Linux Ubuntu 16.04.
+
+Vytvořené funkce implementací jsou sdruženy do několika samostatných souborů s koncovkou \texttt{.py} a umístěné v podadresářích uvnitř samostatného adresáře \texttt{numpy}. Členění do podadresářů je podle logické a funkční příslušnosti. Dále hlavní adresář \texttt{numpy} obsahuje řadu příkladů použití simulačních funkcí.
+
+Funkce ze souborů ve vnořených adresářích lze využít až poté, co jsou do skriptu hlavní úrovně importovány\footnote{Toto je pochopitelně dokumentovanou vlastností jazyka Python. Zde je tento fakt zmíněn pouze jako připomínka.}. 
+
+\subsection{Implementace vysílače pomocí GNURadio v jazyce Python}
+
+Funkce zde popsané jsou umístěny v podadresáři \texttt{siggens}. Patří k základním prostředkům modulací -- generují signál požadovaného tvaru a parametrů a to jak v podobě základní (jediný, neopakující se impulz), tak i ve variantě opakujících se impulzů obsahujících kód. 
+
+
+
+\subsection{Implementace vysílače pomocí API funkcí UHD v jazyce C++}
+
+Funkce, které byly vytvořeny proto, aby generovaly posloupnost impulzů různého tvaru jsou sdruženy v souboru \texttt{train\_pulse.py}. Jsou napsány tak, aby jednak generovaly impulz požadovaného tvaru několikrát opakovaně v průběhu časové osy cané vektorem $t$. Dále mohou zahrnout i kódování - impulz je nebo není na daném časovém úseku přítomen, podle toho, je-li příslušný bit kódové posloupnosti roven logické jedničce nebo nule. 
+
+

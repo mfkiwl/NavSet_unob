@@ -13,6 +13,6 @@ Zpráva vznikla jako komentovaný popis a dokumentace návrhu digitálního rád
 
 K simulaci je využit systém knihoven v jazyce Python, zejména pak knihovny NumPy, Matplotlib a SciPy. S využitím funkcí těchto knihoven byly vytvořeny knihovny vlastních funkcí ke generování signálů, jejich modulace v základním pásmu (baseband), jejich konverze do vyššího kmitočtového pásma (up-convertor), filtrace, tvarování impulzu s ohledem na minimalizaci mezisymbolové interference při přenosu signálu kanálem s omezeným kmitočtovým pásmem (ISI - Inter-Symbol Interference) a další. Jak bylo uvedeno výše, všechny simulace jsou psány v programovacím jazyce Python.
 
-Prvky digitálního rádiového systému jsou zkoušeny v SDR E310 Ettus a/nebo s pomocí levného USB přijímače DVB-TV signnálu s čipem RTL2832U. Implementace je provedena pomocí softwarového balíku GNU Radio.
+Prvky digitálního rádiového systému jsou implementovány do SDR E310 firmy Ettus a/nebo s pomocí levného USB přijímače DVB-TV signnálu s čipem RTL2832U. Implementace je ve většině případů provedena pomocí softwarového balíku GNU Radio. Některé části jsou pak implementovány přímo za použití knihovních funkcí výrobce rádia E310, tzv. API funkcí v jazyce C++.
 
 %\lstinputlisting[language=Python]{./ch_01/src/testbed.py}

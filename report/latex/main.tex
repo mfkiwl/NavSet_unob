@@ -1,13 +1,13 @@
 \documentclass[twoside,11pt]{article}
 
-\usepackage{TechReport_2016_CZ}
+\usepackage{TechReport_2017_CZ}
 
 
 \fancyhf{}
-\lhead{\color{bgr_DarkBlue}Využití SDR v leteckých aplikacích}
-\rhead{\color{bgr_DarkBlue}Struktura a parametry signálu}
+\lhead{\color{bgr_DarkBlue}SDR v navigačních systémech}
+\rhead{\color{bgr_DarkBlue}Implementace vysílače}
 
-\lfoot{\color{bgr_DarkBlue} v1.0, 2016}
+\lfoot{\color{bgr_DarkBlue} v2.0, 2017}
 \rfoot{\color{bgr_DarkBlue} Strana \thepage}
 
 
@@ -30,8 +30,8 @@
 %----------------------------------------------------------------------------------------
 
 
-{ \huge \bfseries Analýza využití softwarově definovaného rádia v leteckých aplikacích.}\\[2in] % Title of your document
-\fontsize{17}{12}\textbf{\textcolor{bgr_DarkBlue}{Návrh signálu a jeho parametry}}\\[4in]
+{ \huge \bfseries Použití softwarově definovaného rádia v~leteckých navigačních aplikacích.}\\[2in] % Title of your document
+\fontsize{17}{12}\textbf{\textcolor{bgr_DarkBlue}{Simulace a implementace vybraných částí vysílače}}\\[4in]
         
 %----------------------------------------------------------------------------------------
 %	AUTHOR SECTION
@@ -41,8 +41,8 @@
 \emph{Autor:} Petr \textsc{BOJDA}\\
 
 \emph{Adresa:} Morávka 575, okr. Frýdek-Místek\\
-\emph{Dne:} \today\\
-\emph{Verze dokumentu:} 1.0
+\emph{Dne:} 30. května 2017\\%\today\\
+\emph{Verze dokumentu:} 2.0
 \end{flushleft}
 \end{minipage}
 
@@ -65,5 +65,14 @@
 
 % ********************************** CHAPTER 3 Realizace ***********************
 \include {./ch_05/tex/chapter_05}
+
+
+% ********************************** CHAPTER 3 Realizace ***********************
+\include {./ch_06/tex/chapter_06}
+
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
 
 \end{document}

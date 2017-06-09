@@ -1,6 +1,9 @@
 % ********************************** CHAPTER 4 source ***********************************************
 \section{Generátor rádiového signálu}
 
+Z úvodní části tohoto textu a z obrázku \ref{fig_block_Tx} je patrno několik stupňů -- fází, ze kterých se celý proces generování rádiového signálu skládá. Uvažujme, že vstupem je posloupnost, viz rovnice (\ref{eq:bseq}). V první řadě jde o formování požadovaných n-tic bitů přenášené bitové posloupnosti $b(n)$, podle zvoleného počtu stavů modulace $M$. Každá z n-tic bitů definuje hodnotu patřičného symbolu. Hodnotu symbolu je potřeba "namapovat" na patřičnou podobu složek signálu základního pásma a poté složky I a Q, tedy $s_m^I(t)$ a $s_m^Q(t)$, podle rovnic (\ref{eq:waveformsI}) a (\ref{eq:waveformsQ}) vygenerovat.
+
+
 
 \marginpar{\textcolor{txt_blue}{up-convertor}} 
 V digitálním rádiovém systému slouží blok "Up-Convertor" k transformaci připraveného signálu v základním pásmu (baseband) do kmitočtového pásma vhodného k rádiovému přenosu. řekněme, že daný krok lze nazvat i "modulací nosné".
@@ -14,9 +17,16 @@ V tomto projektu bude vytvořen Up-convertor pro účely simulace. Ve vlastní h
 Let's start with a time-domain first to derive the differential equation from a \textsl{free-body diagram}. We will use the second Newton's law, setting the mass $M=0$.
 
 
+\subsection{Způsob generování}
+
+\subsubsection {Přímý generátor}
+
+\subsubsection {Root raised -- cosine filtr}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Time Response %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Použití bloku USRP v GNU Radio}
 We are required to derive both natural and step response.
 
 
-
+\lstinputlisting[language=Python, caption={Mapování bitové posloupnosti} ,label=lst_recttr]{./ch_04/src/constallation_mappers.py}
