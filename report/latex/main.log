@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=latex 2017.4.20)  9 JUN 2017 09:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=latex 2017.4.20)  9 JUN 2017 09:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1419,12 +1419,12 @@ Package hyperref Warning: Composite letter `\textring+u'
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 10.
+(hyperref)                removing `\textasciicaron' on input line 12.
 
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 16.
+(hyperref)                removing `\textasciicaron' on input line 18.
 
 ) [24
 
@@ -1461,4 +1461,4 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  62i,13n,69p,2302b,1973s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on main.dvi (25 pages, 197996 bytes).
+Output written on main.dvi (25 pages, 198548 bytes).

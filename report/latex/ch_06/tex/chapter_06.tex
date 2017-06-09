@@ -1,9 +1,11 @@
 % ********************************** CHAPTER 5 source ***********************************************
 \section{Implementace - popis vytvořených programů}
 
-Veškeré simulace byly vytvořeny v jazyce Python, variantě 3.5.2. s využitím nástrojů knihoven Matplotlib 1.5.3, NumPy 1.11.1 a SciPy 0.18.1, vše instalováno v rámci balíku Anaconda 4.2.0. Simulace byly napsány, vyzkoušeny a provozovány na počítači s operačním systémem Linux Ubuntu 16.04.
+Implementace algoritmů do SDR byly vytvořeny v jazyce Python, variantě 2.7. s využitím nástrojů balíku GNU Radio verze 3.7.10.1, dále knihoven NumPy 1.11.1 a SciPy 0.18.1. Simulace byly napsány, vyzkoušeny a provozovány na počítači s operačním systémem Linux Ubuntu 16.04. 
 
-Vytvořené funkce implementací jsou sdruženy do několika samostatných souborů s koncovkou \texttt{.py} a umístěné v podadresářích uvnitř samostatného adresáře \texttt{numpy}. Členění do podadresářů je podle logické a funkční příslušnosti. Dále hlavní adresář \texttt{numpy} obsahuje řadu příkladů použití simulačních funkcí.
+Dále pro přímou kompilaci algoritmů napsaných v jazyce C++ a využívajících API funkcí dodaných s ovladačem UHD výrobce rádia Ettus E310 bylo použito kompilátoru GNU C++ verze 4.9.2. Verze ovladače UHD 003.009.002.
+
+Vytvořené příklady implementací jsou umístěné v podadresářích uvnitř samostatného adresáře \texttt{srcpy\\hwimpl}, resp. \texttt{srcc}. Členění do podadresářů je podle logické a funkční příslušnosti. 
 
 Funkce ze souborů ve vnořených adresářích lze využít až poté, co jsou do skriptu hlavní úrovně importovány\footnote{Toto je pochopitelně dokumentovanou vlastností jazyka Python. Zde je tento fakt zmíněn pouze jako připomínka.}. 
 
@@ -15,6 +17,10 @@ Funkce zde popsané jsou umístěny v podadresáři \texttt{siggens}. Patří k 
 
 \subsection{Implementace vysílače pomocí API funkcí UHD v jazyce C++}
 
-Funkce, které byly vytvořeny proto, aby generovaly posloupnost impulzů různého tvaru jsou sdruženy v souboru \texttt{train\_pulse.py}. Jsou napsány tak, aby jednak generovaly impulz požadovaného tvaru několikrát opakovaně v průběhu časové osy cané vektorem $t$. Dále mohou zahrnout i kódování - impulz je nebo není na daném časovém úseku přítomen, podle toho, je-li příslušný bit kódové posloupnosti roven logické jedničce nebo nule. 
+Programy, které byly vytvořeny proto, aby demonstrovaly možnosti použití API funkcí dodaných výrobcem rádia spolu s ovladači UHD jsou uloženy v adresáři \texttt{srcc}.
+
+Jsou napsány jako zdrojové soubory jazyka c++ v souborech s koncovkou \texttt{ .cpp}. Definice použitých tříd jsou potom přidány v podobě hlavičkových souborů s koncovkou \texttt{ .hpp}.
+
+Pro to, aby bylo možno programy spustit na cílové platformě, je potřeba je tam i zkompilovat. Spolu s API funkcemi výrobce dodává i vlastní sadu příkladů použití a dále vzorový příklad kompilace. Ten byl po nezbytných úpravách uložen v adresáři \texttt{src\\UHD\_compile}. Postup je popsán v přiloženém souboru \texttt{README}.
 
 
