@@ -182,7 +182,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 368)</value>
+      <value>(376, 240)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -194,7 +194,7 @@
     </param>
     <param>
       <key>ipaddr</key>
-      <value>127.0.0.1</value>
+      <value>192.168.21.1</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -253,7 +253,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(776, 212)</value>
+      <value>(704, 244)</value>
     </param>
     <param>
       <key>gui_hint</key>
