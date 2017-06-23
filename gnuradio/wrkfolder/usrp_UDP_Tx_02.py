@@ -16,7 +16,7 @@ from optparse import OptionParser
 import time
 
 
-class usrp_UDP_Tx_01(gr.top_block):
+class usrp_UDP_Tx_02(gr.top_block):
 
     def __init__(self):
         gr.top_block.__init__(self, "Usrp Udp Tx 01")
@@ -43,7 +43,7 @@ class usrp_UDP_Tx_01(gr.top_block):
         self.uhd_usrp_source_0.set_center_freq(freq, 0)
         self.uhd_usrp_source_0.set_gain(gain, 0)
         self.uhd_usrp_source_0.set_antenna('TX/RX', 0)
-        self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, '196.168.21.1', 12345, 1472, True)
+        self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, '127.0.0.1', 12345, 1472, True)
 
         ##################################################
         # Connections
@@ -79,7 +79,7 @@ class usrp_UDP_Tx_01(gr.top_block):
         self.uhd_usrp_source_0.set_center_freq(self.freq, 0)
 
 
-def main(top_block_cls=usrp_UDP_Tx_01, options=None):
+def main(top_block_cls=usrp_UDP_Tx_02, options=None):
 
     tb = top_block_cls()
     tb.start()

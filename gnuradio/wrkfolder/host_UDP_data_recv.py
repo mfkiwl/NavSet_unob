@@ -28,7 +28,7 @@ import sip
 import sys
 
 
-class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
+class host_UDP_data_recv(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Sim Udp Rx 01")
@@ -147,7 +147,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
-        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '192.168.21.1', 12345, 1472, True)
+        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '127.0.0.1', 12345, 1472, True)
 
         ##################################################
         # Connections
@@ -181,7 +181,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0.set_frequency_range(self.freq, self.samp_rate)
 
 
-def main(top_block_cls=sim_UDP_Rx_01, options=None):
+def main(top_block_cls=host_UDP_data_recv, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):

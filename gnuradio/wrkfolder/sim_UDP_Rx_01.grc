@@ -253,7 +253,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 244)</value>
+      <value>(776, 148)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -596,7 +596,7 @@
     </param>
     <param>
       <key>fc</key>
-      <value>0</value>
+      <value>freq</value>
     </param>
     <param>
       <key>comment</key>
@@ -620,7 +620,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(776, 300)</value>
+      <value>(776, 268)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -852,7 +852,7 @@
     </param>
     <param>
       <key>wintype</key>
-      <value>firdes.WIN_BLACKMAN_hARRIS</value>
+      <value>firdes.WIN_RECTANGULAR</value>
     </param>
     <param>
       <key>label</key>
