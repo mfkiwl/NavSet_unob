@@ -1,9 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 ##################################################
-# GNU Radio Python Flow Graph
-# Title: Sim Udp Tx 01
+# GNU Radio Python Flow Graph - highly modified script
+# Title: E310_sim_UDP_data_send
 # Generated: Sat Jun 17 19:07:24 2017
+# Modified: Sat Jun 24 2017
 ##################################################
 
 from gnuradio import blocks
@@ -159,7 +160,7 @@ def main():
     print "sample rate is" , tb.get_sample_rate()
 
     print "Parameters of the UDP connection:"
-    print "IP address is " , tb.get_ip_address(), " constellation points"
+    print "IP address is " , tb.get_ip_address()
     print "UDP port" , tb.get_UDP_port()
     print "-" * 60
     try:
