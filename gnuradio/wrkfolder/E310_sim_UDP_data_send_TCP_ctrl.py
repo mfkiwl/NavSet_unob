@@ -9,16 +9,12 @@
 
 from gnuradio import blocks
 from gnuradio import digital
-from gnuradio import eng_notation
 from gnuradio import gr
 import argparse
-from gnuradio.eng_option import eng_option
-from gnuradio.filter import firdes
-
+import socket, sys
 import numpy
 
-import subprocess
-from datetime import datetime
+
 
 ##########################################################
 # Global Variables
@@ -26,7 +22,8 @@ from datetime import datetime
 IP_loopback = '127.0.0.1'
 IP_remote_server = '192.168.21.1'
 IP_local_eth = '192.168.21.10'
-UDP_port = 12345
+UDP_data_port = 12345
+TCP_ctrl_port = 22345
 
 
 class E310_sim_UDP_data_send(gr.top_block):
@@ -42,7 +39,8 @@ class E310_sim_UDP_data_send(gr.top_block):
         self.samples_per_symbols = args.samples_per_symbols
         self.excess_bw = args.excess_bw
         #    Network Connections Parameters
-        self.UDP_port = args.UDP_port
+        self.UDP_data_port = args.UDP_data_port
+        self.TCP_ctrl_port = args.TCP_ctrl_port
         self.ip_address = args.ip_address
         if args.network:
             self.ip_address = args.ip_address
@@ -61,7 +59,7 @@ class E310_sim_UDP_data_send(gr.top_block):
             verbose=False,
             log=False,
         )
-        self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex * 1, self.ip_address, self.UDP_port, 1472, True)
+        self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex * 1, self.ip_address, self.UDP_data_port, 1472, True)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex * 1, self.sample_rate, True)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.5,))
         self.analog_random_source_x_0 = blocks.vector_source_b(map(int, numpy.random.randint(0, 255, 10000000)), True)
@@ -99,11 +97,17 @@ class E310_sim_UDP_data_send(gr.top_block):
     def set_excess_bw(self, excess_bw):
         self.excess_bw = excess_bw
 
-    def get_UDP_port(self):
-        return self.UDP_port
+    def get_UDP_data_port(self):
+        return self.UDP_data_port
 
-    def set_UDP_port(self, UDP_port):
-        self.UDP_port = UDP_port
+    def set_UDP_data_port(self, UDP_data_port):
+        self.UDP_data_port = UDP_data_port
+
+    def get_TCP_ctrl_port(self):
+        return self.TCP_ctrl_port
+
+    def set_TCP_port(self, TCP_ctrl_port):
+        self.TCP_port = TCP_ctrl_port
 
     def get_ip_address(self):
         return self.ip_address
@@ -130,12 +134,14 @@ def setup_argparser():
     group_signal.add_argument("-e", "--excess-bandwidth", dest="excess_bw", type=float, default=500e-3,
                               help="Sets number of bits per one data symbol")
 
-    group_network = parser.add_argument_group('UDP Connection Parameters')
+    group_network = parser.add_argument_group('Network Connection Parameters')
 
     group_network.add_argument("-a", "--ip-address", dest="ip_address", default=IP_remote_server,
                                help="Sets remote ip address to send the data stream to")
-    group_network.add_argument("-p", "--UDP-port", dest="UDP_port", type=int, default=UDP_port,
-                               help="Sets an UDP port")
+    group_network.add_argument("-d", "--UDP-data-port", dest="UDP_data_port", type=int, default=UDP_data_port,
+                               help="Sets an UDP port through which the data are sent")
+    group_network.add_argument("-p", "--TCP-ctrl-port", dest="TCP_ctrl_port", type=int, default=TCP_ctrl_port,
+                               help="Sets an TCP port through which the control commands are received")
     group_network.add_argument("-l", "--loopback", action="store_true",
                                help="Sets a default loopback configuration")
     group_network.add_argument("-n", "--network", action="store_true",
@@ -159,9 +165,10 @@ def main():
     print "excess bandwidth is ", tb.get_excess_bw()
     print "sample rate is" , tb.get_sample_rate()
 
-    print "Parameters of the UDP connection:"
+    print "Parameters of the network connections:"
     print "IP address is " , tb.get_ip_address()
-    print "UDP port" , tb.get_UDP_port()
+    print "UDP data port" , tb.get_UDP_data_port()
+    print "TCP ctrl port" , tb.get_TCP_ctrl_port()
     print "-" * 60
     try:
         raw_input('Press Enter to quit: ')
