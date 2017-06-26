@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Sim Udp Rx 01
-# Generated: Sat Jun 24 20:53:58 2017
+# Generated: Mon Jun 26 01:16:51 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -58,14 +58,14 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         ##################################################
         self.samp_rate = samp_rate = 2e6
         self.gain = gain = 30
-        self.freq = freq = 470e6
+        self.freq = freq = 1000e6
 
         ##################################################
         # Blocks
         ##################################################
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
         	4064, #size
-        	firdes.WIN_RECTANGULAR, #wintype
+        	firdes.WIN_BLACKMAN, #wintype
         	freq, #fc
         	samp_rate, #bw
         	"", #name

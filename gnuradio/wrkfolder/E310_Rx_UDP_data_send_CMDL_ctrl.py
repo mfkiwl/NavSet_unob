@@ -80,6 +80,7 @@ class E310_Rx_UDP_data_send(gr.top_block, UHDApp):
             tr = uhd.tune_request(self.freq)
             self.usrp.set_center_freq  (tr, c)
         self.usrp_device_info = self.get_usrp_info_string(compact=True, tx_or_rx='rx')
+        self.bandwidth = self.usrp.get_bandwidth (0)
 
         self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex * 1, self.ip_address, self.UDP_data_port, 1472, True)
 
@@ -151,6 +152,18 @@ class E310_Rx_UDP_data_send(gr.top_block, UHDApp):
 
     def get_normalized_gain (self):
         return self.usrp.get_normalized_gain (0)
+
+    def set_center_freq (self,freq):
+        self.usrp.set_center_freq (freq, 0)
+        self.freq = self.usrp.get_center_freq (0)
+
+    def set_bandwidth (self,bw):
+        self.usrp.set_bandwidth (bw, 0)
+        self.bandwidth = self.usrp.get_bandwidth (0)
+
+    def set_gain (self,gain):
+        self.usrp.set_gain (gain, 0)
+        self.gain = self.usrp.get_gain (0)
 
 def setup_argparser():
     # Parses a set of input arguments coming from a command line
@@ -287,7 +300,7 @@ def main():
             break
 
     # Printing the information to screen
-    print 'Signal Generator went off.'
+    print 'The receiver went off.'
 
     tb.stop()
     tb.wait()

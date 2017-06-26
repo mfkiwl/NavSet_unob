@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8858d2a9-01ac-4c3b-8e43-d9aab08259d0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/E310_Rx_UDP_data_send_CMDL_ctrl.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/usrp_UDP_Tx_multich.grc" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/usrp_UDP_Tx_multich.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gnuradio/wrkfolder/E310_Rx_UDP_data_send_CMDL_ctrl.py" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/E310_Rx_UDP_data_send_CMDL_ctrl.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.grc" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.grc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.py" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gnuradio/wrkfolder/usrp_UDP_Tx_01.py" afterPath="$PROJECT_DIR$/gnuradio/wrkfolder/usrp_UDP_Tx_01.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,11 +23,11 @@
     <window id="1">
       <content type="file-editors">
         <state>
-          <leaf>
+          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
             <file leaf-file-name="E310_sim_UDP_data_send.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="267">
+                  <state relative-caret-position="2232">
                     <caret line="135" column="52" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
                     <folding>
                       <element signature="e#303#330#0" expanded="true" />
@@ -37,7 +39,7 @@
             <file leaf-file-name="host_UDP_data_recv.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/host_UDP_data_recv.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="2520">
+                  <state relative-caret-position="2358">
                     <caret line="140" column="70" lean-forward="true" selection-start-line="140" selection-start-column="70" selection-end-line="140" selection-end-column="70" />
                     <folding>
                       <element signature="e#512#532#0" expanded="true" />
@@ -49,7 +51,7 @@
             <file leaf-file-name="E310_sim_UDP_data_send_CMDL_ctrl.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send_CMDL_ctrl.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="213">
+                  <state relative-caret-position="918">
                     <caret line="56" column="56" lean-forward="true" selection-start-line="56" selection-start-column="56" selection-end-line="56" selection-end-column="56" />
                     <folding>
                       <element signature="e#303#330#0" expanded="true" />
@@ -61,7 +63,7 @@
             <file leaf-file-name="E310_sim_UDP_data_send_TCP_ctrl.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send_TCP_ctrl.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="141">
+                  <state relative-caret-position="558">
                     <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
                     <folding>
                       <element signature="e#303#330#0" expanded="true" />
@@ -92,7 +94,7 @@
         <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/network/netlab01/udp_remote.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="25" column="15" lean-forward="true" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
+              <caret line="25" column="15" lean-forward="false" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -101,8 +103,8 @@
       <file leaf-file-name="tx_simple.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/Tx_gr/tx_simple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3096">
-              <caret line="172" column="75" lean-forward="true" selection-start-line="172" selection-start-column="75" selection-end-line="172" selection-end-column="75" />
+            <state relative-caret-position="2916">
+              <caret line="172" column="75" lean-forward="false" selection-start-line="172" selection-start-column="75" selection-end-line="172" selection-end-column="75" />
               <folding>
                 <element signature="e#237#264#0" expanded="true" />
               </folding>
@@ -113,8 +115,8 @@
       <file leaf-file-name="E310_Rx_UDP_data_send_CMDL_ctrl.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_Rx_UDP_data_send_CMDL_ctrl.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="613">
-              <caret line="194" column="55" lean-forward="false" selection-start-line="194" selection-start-column="55" selection-end-line="194" selection-end-column="55" />
+            <state relative-caret-position="734">
+              <caret line="165" column="42" lean-forward="true" selection-start-line="165" selection-start-column="42" selection-end-line="165" selection-end-column="42" />
               <folding>
                 <element signature="e#303#330#0" expanded="true" />
               </folding>
@@ -125,7 +127,7 @@
       <file leaf-file-name="sim_UDP_Rx_01.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2573">
+            <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -499,7 +501,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="37" y="24" width="1883" height="1176" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24946237" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961932" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -523,16 +525,52 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Report includes implementation of the transmitter" />
     <MESSAGE value="synchro may finall" />
-    <MESSAGE value="synchro" />
     <MESSAGE value="E310 signal generator via UDP, command line argument parser added" />
     <MESSAGE value="E310 signal generator via UDP, CMDL prompt control added" />
-    <option name="LAST_COMMIT_MESSAGE" value="E310 signal generator via UDP, CMDL prompt control added" />
+    <MESSAGE value="synchro" />
+    <option name="LAST_COMMIT_MESSAGE" value="synchro" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/network/netlab01/udp_remote.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="25" column="15" lean-forward="false" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/Tx_gr/tx_simple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3096">
+          <caret line="172" column="75" lean-forward="true" selection-start-line="172" selection-start-column="75" selection-end-line="172" selection-end-column="75" />
+          <folding>
+            <element signature="e#237#264#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_Rx_UDP_data_send_CMDL_ctrl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#303#330#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/network/netlab01/udp_remote.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -553,7 +591,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -561,7 +598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -590,15 +626,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/sim_UDP_Rx_01.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2573">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/network/netlab01/udp_remote.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="25" column="15" lean-forward="false" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/Tx_gr/tx_simple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2916">
+          <caret line="172" column="75" lean-forward="false" selection-start-line="172" selection-start-column="75" selection-end-line="172" selection-end-column="75" />
+          <folding>
+            <element signature="e#237#264#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2232">
+          <caret line="135" column="52" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+          <folding>
+            <element signature="e#303#330#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/host_UDP_data_recv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2520">
+        <state relative-caret-position="2358">
           <caret line="140" column="70" lean-forward="true" selection-start-line="140" selection-start-column="70" selection-end-line="140" selection-end-column="70" />
           <folding>
             <element signature="e#512#532#0" expanded="true" />
@@ -606,10 +670,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send.py">
+    <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send_CMDL_ctrl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="135" column="52" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+        <state relative-caret-position="918">
+          <caret line="56" column="56" lean-forward="true" selection-start-line="56" selection-start-column="56" selection-end-line="56" selection-end-column="56" />
           <folding>
             <element signature="e#303#330#0" expanded="true" />
           </folding>
@@ -618,38 +682,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send_TCP_ctrl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
+        <state relative-caret-position="558">
           <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
           <folding>
             <element signature="e#303#330#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_sim_UDP_data_send_CMDL_ctrl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="56" column="56" lean-forward="true" selection-start-line="56" selection-start-column="56" selection-end-line="56" selection-end-column="56" />
-          <folding>
-            <element signature="e#303#330#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/network/netlab01/udp_remote.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="15" lean-forward="true" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srcpy/hwimpl/Tx_gr/tx_simple.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3096">
-          <caret line="172" column="75" lean-forward="true" selection-start-line="172" selection-start-column="75" selection-end-line="172" selection-end-column="75" />
-          <folding>
-            <element signature="e#237#264#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -664,8 +700,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gnuradio/wrkfolder/E310_Rx_UDP_data_send_CMDL_ctrl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="613">
-          <caret line="194" column="55" lean-forward="false" selection-start-line="194" selection-start-column="55" selection-end-line="194" selection-end-column="55" />
+        <state relative-caret-position="734">
+          <caret line="165" column="42" lean-forward="true" selection-start-line="165" selection-start-column="42" selection-end-line="165" selection-end-column="42" />
           <folding>
             <element signature="e#303#330#0" expanded="true" />
           </folding>

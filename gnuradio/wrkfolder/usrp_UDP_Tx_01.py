@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Usrp Udp Tx 01
-# Generated: Sun Jun 18 02:48:18 2017
+# Generated: Mon Jun 26 01:05:28 2017
 ##################################################
 
 from gnuradio import blocks
@@ -43,7 +43,7 @@ class usrp_UDP_Tx_01(gr.top_block):
         self.uhd_usrp_source_0.set_center_freq(freq, 0)
         self.uhd_usrp_source_0.set_gain(gain, 0)
         self.uhd_usrp_source_0.set_antenna('TX/RX', 0)
-        self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, '196.168.21.1', 12345, 1472, True)
+        self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, '127.0.0.1', 12345, 1472, True)
 
         ##################################################
         # Connections
