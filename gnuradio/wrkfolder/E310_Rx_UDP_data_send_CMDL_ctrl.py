@@ -220,8 +220,8 @@ def main():
     print "UHD driver info: " , tb.get_uhd_version_info()
     print "sample rate is" , tb.get_sample_rate() / 1e3, "kSps"
 
-    print "Available LO stages: " , tb.get_lo_names()
-    print "Available LO frequency range: " , tb.get_lo_freq_range(), "in Hz"
+    #print "Available LO stages: " , tb.get_lo_names()
+    #print "Available LO frequency range: " , tb.get_lo_freq_range(), "in Hz"
     print "Current center frequency: " , tb.get_center_freq ()/1e6, "MHz"
     print "Available RF bandpass filter bandwidth range: " , tb.get_bandwidth_range (), "in Hz"
     print "Current RF bandpass filter setting: " , tb.get_bandwidth ()/1e6, "MHz"
@@ -262,12 +262,14 @@ def main():
                     gain = tb.get_gain()
                     print "Gain is now: ", gain
                 elif param[0] == "a":
-                    dc_offset_auto = bool(param[1])
-                    if dc_offset_auto:
-                        print "Attempting to enable auto adjusting of DC offset. "
-                    else:
+                    dc_offset_auto = param[1]
+                    print "DC offset requested is", dc_offset_auto
+                    if dc_offset_auto == "disable":
                         print "Attempting to disable auto adjusting of DC offset. "
-                    tb.set_dc_offset_auto(dc_offset_auto)
+                        tb.set_dc_offset_auto(False)
+                    else:
+                        print "Attempting to enable auto adjusting of DC offset. "
+                        tb.set_dc_offset_auto(True)
                 elif param[0] == "d":
                     dc_offset = float(param[1])
                     print "Attempting to set the DC offset to: ", dc_offset
@@ -290,7 +292,7 @@ def main():
                     # parameters are
                     print "-" * 60
                     print "Parameters of the signal generator:"
-                    print "center frequency " , tb.get_center_frequency(), " constellation points"
+                    print "center frequency " , tb.get_center_freq(), " constellation points"
                     print "RF bandwidth" , tb.get_bandwidth()
                     print "gain ", tb.get_gain()
                     print "sample rate is" , tb.get_sample_rate()
