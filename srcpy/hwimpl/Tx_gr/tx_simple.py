@@ -28,10 +28,10 @@ class tx_simple(gr.top_block):
 		# Variables
 		##################################################
  		self.sps = sps = 2
-		self.samp_rate = samp_rate = 32000
+		self.samp_rate = samp_rate = 2e6
 		self.qpsk_const = qpsk_const = digital.constellation_rect(([-1-1j, -1+1j, 1+1j, 1-1j]), ([0, 1, 3, 2]), 4, 2, 2, 1, 1).base()
-		self.f0 = f0 = 1.06e9
-		self.Gain_dB = Gain_dB = 30
+		self.f0 = f0 = 374e6
+		self.Gain_dB = Gain_dB = 45
 
 		##################################################
 		# Blocks
