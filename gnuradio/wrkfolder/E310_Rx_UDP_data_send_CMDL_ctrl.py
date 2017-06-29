@@ -46,11 +46,13 @@ class E310_Rx_UDP_data_send(gr.top_block, UHDApp):
         #    UHD Radio Receiver Parameters
         self.antenna = args.antenna
         self.freq = args.freq
-        self.gain = args.gain_type
+        self.gain = args.gain
         self.gain_type = args.gain_type
         self.spec = args.spec
         self.stream_args = args.stream_args
         self.wire_format = args.otw_format
+        self.dc_offset_auto = args.dc_offset_auto
+        self.dc_offset = args.dc_offset
 
         #    Network Connections Parameters
         self.UDP_data_port = args.UDP_data_port
@@ -150,8 +152,8 @@ class E310_Rx_UDP_data_send(gr.top_block, UHDApp):
     def get_gain (self):
         return self.usrp.get_gain (0)
 
-    def get_normalized_gain (self):
-        return self.usrp.get_normalized_gain (0)
+ #   def get_normalized_gain (self):
+  #      return self.usrp.get_normalized_gain (0)
 
     def set_center_freq (self,freq):
         self.usrp.set_center_freq (freq, 0)
@@ -162,8 +164,16 @@ class E310_Rx_UDP_data_send(gr.top_block, UHDApp):
         self.bandwidth = self.usrp.get_bandwidth (0)
 
     def set_gain (self,gain):
-        self.usrp.set_gain (gain, 0)
-        self.gain = self.usrp.get_gain (0)
+        print "The requested gain is: ", gain
+        self.usrp.set_gain (gain,'', 0)
+        self.gain = self.usrp.get_gain ('',0)
+
+    def set_dc_offset_auto (self,dc_offset_auto):
+        self.usrp.set_auto_dc_offset (dc_offset_auto, 0)
+
+    def set_dc_offset (self,dc_offset):
+        self.usrp.set_dc_offset (dc_offset, 0)
+
 
 def setup_argparser():
     # Parses a set of input arguments coming from a command line
@@ -171,13 +181,21 @@ def setup_argparser():
             description="UHD Receiver",
             tx_or_rx="Rx")
 
-    group_network = parser.add_argument_group('Network Connection Parameters')
+    group_radio = parser.add_argument_group('USRP Additional Arguments')
+
+    group_radio.add_argument("-d","--DC-offset", dest="dc_offset", default=0.5,
+                               help="Set a constant DC offset value")
+
+    group_radio.add_argument("--DC-offset-auto", dest="dc_offset_auto", default=True,
+                               help="Enable/disable the automatic DC offset correction")
+
+    group_network = parser.add_argument_group('Network Connection Arguments')
 
     group_network.add_argument("-i", "--ip-address", dest="ip_address", default=IP_remote_server,
                                help="Sets remote ip address to send the data stream to")
-    group_network.add_argument("-d", "--UDP-data-port", dest="UDP_data_port", type=int, default=UDP_data_port,
+    group_network.add_argument("-u", "--UDP-data-port", dest="UDP_data_port", type=int, default=UDP_data_port,
                                help="Sets an UDP port through which the data are sent")
-    group_network.add_argument("-p", "--TCP-ctrl-port", dest="TCP_ctrl_port", type=int, default=TCP_ctrl_port,
+    group_network.add_argument("-t", "--TCP-ctrl-port", dest="TCP_ctrl_port", type=int, default=TCP_ctrl_port,
                                help="Sets an TCP port through which the control commands are received")
     group_network.add_argument("-l", "--loopback", action="store_true",
                                help="Sets a default loopback configuration")
@@ -208,7 +226,7 @@ def main():
     print "Available RF bandpass filter bandwidth range: " , tb.get_bandwidth_range (), "in Hz"
     print "Current RF bandpass filter setting: " , tb.get_bandwidth ()/1e6, "MHz"
     print "Available gain range: " , tb.get_gain_range(), "in dB"
-    print "Current RF gain: " , tb.get_gain (), "dB, normalized gain: ", tb.get_normalized_gain ()
+    print "Current RF gain: " , tb.get_gain (), "dB."
 
     print "-" * 60
     print "Parameters of the network connections:"
@@ -222,60 +240,59 @@ def main():
             # Ask for input
             print "Receiver is on now, you can switch it off by pressing CTRL+C."
             print "Please, feel free to change any signal parameter by pressing c, s, r or e followed by an appropriate value."
-            parameter_change    = raw_input("Signaling now .. >> ")
+            parameter_change    = raw_input("Receiving now .. >> ")
             param = parameter_change.split()
             if len(param) == 2:
-                if param[0] == "c":
-                    c_pts = int(param[1])
-                    print "Attempting to change current constellation points to: ", c_pts
-                    #tb.set_c_pts(c_pts)
-                    c_pts = tb.get_c_pts()
-                    print "Number of constellation points is now: ", c_pts
-                    print "This parameter can't be changed on runtime"
-                elif param[0] == "s":
-                    samples_per_symbols = int(param[1])
-                    print "Attempting to change current number of samples per symbol to: ", samples_per_symbols
-                    #tb.set_samples_per_symbols(samples_per_symbols)
-                    samples_per_symbols = tb.get_samples_per_symbols()
-                    print "There is ", samples_per_symbols, "samples per symbol being generated now"
-                    print "This parameter can't be changed on runtime"
-                elif param[0] == "r":
-                    sample_rate = float(param[1])
-                    print "Attempting to change current sampling rate to: ", sample_rate
-                    #tb.set_sample_rate(sample_rate)
-                    sample_rate = tb.get_sample_rate()
-                    print "Sampling rate is now: ", sample_rate
-                    print "This parameter can't be changed on runtime"
-                elif param[0] == "e":
-                    excess_bw = float(param[1])
-                    print "Attempting to change current excess bandwidth to: ", excess_bw
-                    #tb.set_excess_bw(excess_bw)
-                    excess_bw = tb.get_excess_bw()
-                    print "The excess bandwidth is now ", excess_bw
-                    print "This parameter can't be changed on runtime"
+                if param[0] == "f":
+                    freq = float(param[1])
+                    print "Attempting to change current center frequency to: ", freq
+                    tb.set_center_freq(freq)
+                    freq = tb.get_center_freq()
+                    print "Center frequency is now: ", freq
+                elif param[0] == "b":
+                    bw = float(param[1])
+                    print "Attempting to change current RF bandwidth: ", bw
+                    tb.set_bandwidth(bw)
+                    bw = tb.get_bandwidth()
+                    print "RF bandwidth is now: ", bw
+                elif param[0] == "g":
+                    gain = float(param[1])
+                    print "Attempting to change current gain to: ", gain
+                    tb.set_gain(gain)
+                    gain = tb.get_gain()
+                    print "Gain is now: ", gain
+                elif param[0] == "a":
+                    dc_offset_auto = bool(param[1])
+                    if dc_offset_auto:
+                        print "Attempting to enable auto adjusting of DC offset. "
+                    else:
+                        print "Attempting to disable auto adjusting of DC offset. "
+                    tb.set_dc_offset_auto(dc_offset_auto)
+                elif param[0] == "d":
+                    dc_offset = float(param[1])
+                    print "Attempting to set the DC offset to: ", dc_offset
+                    tb.set_dc_offset(dc_offset)
                 else:
                     print "Can't recognize received ", param[0], "parameter."
             elif len(param) == 1:
-                if param[0] == "c":
-                    c_pts = tb.get_c_pts()
-                    print "Current number of constellation points is: ", c_pts
-                elif param[0] == "s":
-                    samples_per_symbols = tb.get_samples_per_symbols()
-                    print "Currently is being generated ", samples_per_symbols, " samples per one symbol."
-                elif param[0] == "r":
-                    sample_rate = tb.get_sample_rate()
-                    print "Current sampling rate is ", sample_rate/1e3, " kSps."
-                elif param[0] == "e":
-                    excess_bw = tb.get_excess_bw()
-                    print "Current excess bandwidth is ", excess_bw
+                if param[0] == "f":
+                    freq = tb.get_center_freq()
+                    print "Current center frequency is: ", freq/1e6 , " MHz."
+                elif param[0] == "b":
+                    bw = tb.get_bandwidth()
+                    print "Current RF bandwidth is: ", bw/1e3, " kHz"
+                elif param[0] == "g":
+                    gain = tb.get_gain()
+                    print "Current gain is ", gain, " dB."
+
                 elif param[0] == "l":
                     # Print a nice banner with information on what the current signal generator
                     # parameters are
                     print "-" * 60
                     print "Parameters of the signal generator:"
-                    print "modulation PSK with " , tb.get_c_pts(), " constellation points"
-                    print "samples per symbol" , tb.get_samples_per_symbols()
-                    print "excess bandwidth is ", tb.get_excess_bw()
+                    print "center frequency " , tb.get_center_frequency(), " constellation points"
+                    print "RF bandwidth" , tb.get_bandwidth()
+                    print "gain ", tb.get_gain()
                     print "sample rate is" , tb.get_sample_rate()
                 elif param[0] == "n":
                     # Print a nice banner with information on what the current network
