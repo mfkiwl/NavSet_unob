@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Sim Udp Rx 01
-# Generated: Thu Jun 29 04:54:22 2017
+# Generated: Sat Jul  1 23:21:12 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -58,7 +58,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         ##################################################
         self.samp_rate = samp_rate = 2e6
         self.gain = gain = 30
-        self.freq = freq = 1000e6
+        self.freq = freq = 374e6
 
         ##################################################
         # Blocks
@@ -66,8 +66,8 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_c(
         	4064, #size
         	firdes.WIN_BLACKMAN, #wintype
-        	0, #fc
-        	2*samp_rate, #bw
+        	freq, #fc
+        	samp_rate, #bw
         	"", #name
         	1 #number of inputs
         )
@@ -107,7 +107,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
         self.qtgui_const_sink_x_0 = qtgui.const_sink_c(
-        	4096, #size
+        	1024, #size
         	'QT GUI Plot', #name
         	1 #number of inputs
         )
@@ -147,7 +147,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
-        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '192.168.21.1', 12345, 1472, True)
+        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '127.0.0.1', 12345, 1472, True)
 
         ##################################################
         # Connections
@@ -165,7 +165,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, 2*self.samp_rate)
+        self.qtgui_freq_sink_x_0.set_frequency_range(self.freq, self.samp_rate)
 
     def get_gain(self):
         return self.gain
@@ -178,6 +178,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
 
     def set_freq(self, freq):
         self.freq = freq
+        self.qtgui_freq_sink_x_0.set_frequency_range(self.freq, self.samp_rate)
 
 
 def main(top_block_cls=sim_UDP_Rx_01, options=None):

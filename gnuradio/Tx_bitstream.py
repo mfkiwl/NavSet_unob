@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Tx Bitstream
-# Generated: Fri Nov 25 21:16:49 2016
+# Generated: Sun Jul  2 00:19:08 2017
 ##################################################
 
 from gnuradio import blocks
@@ -40,6 +40,7 @@ class Tx_bitstream(gr.top_block):
         		channels=range(1),
         	),
         )
+        self.uhd_usrp_sink_0.set_subdev_spec('A:B', 0)
         self.uhd_usrp_sink_0.set_samp_rate(samp_rate)
         self.uhd_usrp_sink_0.set_center_freq(1060e6, 0)
         self.uhd_usrp_sink_0.set_gain(30, 0)
@@ -49,7 +50,7 @@ class Tx_bitstream(gr.top_block):
           differential=True,
           samples_per_symbol=sps,
           pre_diff_code=True,
-          excess_bw=0.35,
+          excess_bw=0.10,
           verbose=False,
           log=False,
           )
