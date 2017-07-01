@@ -43,6 +43,7 @@ class tx_simple(gr.top_block):
 			channels=range(1),
 			),
 		)
+		self.uhd_usrp_sink_0.set_subdev_spec('A:A', 0)
 		self.uhd_usrp_sink_0.set_samp_rate(samp_rate)
 		self.uhd_usrp_sink_0.set_center_freq(f0, 0)
 		self.uhd_usrp_sink_0.set_gain(Gain_dB, 0)
