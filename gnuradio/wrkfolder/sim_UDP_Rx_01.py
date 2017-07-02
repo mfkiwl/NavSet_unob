@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Sim Udp Rx 01
-# Generated: Sun Jul  2 02:05:17 2017
+# Generated: Sun Jul  2 02:22:19 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -56,7 +56,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 2e6
+        self.samp_rate = samp_rate = .2e6
         self.gain = gain = 30
         self.freq = freq = 374e6
 
@@ -147,7 +147,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
-        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '127.0.0.1', 12345, 1472, True)
+        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '192.168.21.1', 12345, 1472, True)
 
         ##################################################
         # Connections

@@ -79,10 +79,11 @@ class E310_Rx_UDP_data_send(gr.top_block, UHDApp):
         self._ant_options = self.usrp.get_antennas(self.channels[0])
 
         #self.uhd_usrp_source_0.set_clock_rate(30.72e6, uhd.ALL_MBOARDS)
+        self.usrp.set_subdev_spec('A:A', 0)
         self.usrp.set_samp_rate(self.samp_rate)
         self.usrp.set_center_freq(self.freq, 0)
         self.usrp.set_gain(self.gain, 0)
-        self.usrp.set_antenna('TX/RX', 0)
+        self.usrp.set_antenna('RX2', 0)
         self.usrp_device_info = self.get_usrp_info_string(compact=True, tx_or_rx='rx')
         self.bandwidth = self.usrp.get_bandwidth (0)
 
