@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Sim Udp Rx 01
-# Generated: Sun Jul  2 19:23:13 2017
+# Title: Sim Udp Rx 02
+# Generated: Sun Jul  2 23:01:51 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -28,12 +28,12 @@ import sip
 import sys
 
 
-class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
+class sim_UDP_Rx_02(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Sim Udp Rx 01")
+        gr.top_block.__init__(self, "Sim Udp Rx 02")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Sim Udp Rx 01")
+        self.setWindowTitle("Sim Udp Rx 02")
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -50,7 +50,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "sim_UDP_Rx_01")
+        self.settings = Qt.QSettings("GNU Radio", "sim_UDP_Rx_02")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
@@ -147,7 +147,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         
         self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
-        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '192.168.21.1', 12345, 1472, True)
+        self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_gr_complex*1, '192.168.21.1', 12556, 1472, True)
 
         ##################################################
         # Connections
@@ -156,7 +156,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_udp_source_0, 0), (self.qtgui_freq_sink_x_0, 0))    
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "sim_UDP_Rx_01")
+        self.settings = Qt.QSettings("GNU Radio", "sim_UDP_Rx_02")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -181,7 +181,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0.set_frequency_range(self.freq, self.samp_rate)
 
 
-def main(top_block_cls=sim_UDP_Rx_01, options=None):
+def main(top_block_cls=sim_UDP_Rx_02, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):

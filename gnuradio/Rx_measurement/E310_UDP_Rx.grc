@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>sim_UDP_Rx_01</value>
+      <value>sim_UDP_Rx_02</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -218,7 +218,7 @@
     </param>
     <param>
       <key>port</key>
-      <value>12345</value>
+      <value>12556</value>
     </param>
     <param>
       <key>vlen</key>

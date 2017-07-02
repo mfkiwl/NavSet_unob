@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Sim Udp Rx 01
-# Generated: Sun Jul  2 19:23:13 2017
+# Title: E312 Udp Rx
+# Generated: Sun Jul  2 22:59:02 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -28,12 +28,12 @@ import sip
 import sys
 
 
-class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
+class E312_UDP_Rx(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Sim Udp Rx 01")
+        gr.top_block.__init__(self, "E312 Udp Rx")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Sim Udp Rx 01")
+        self.setWindowTitle("E312 Udp Rx")
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -50,7 +50,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "sim_UDP_Rx_01")
+        self.settings = Qt.QSettings("GNU Radio", "E312_UDP_Rx")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
@@ -156,7 +156,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_udp_source_0, 0), (self.qtgui_freq_sink_x_0, 0))    
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "sim_UDP_Rx_01")
+        self.settings = Qt.QSettings("GNU Radio", "E312_UDP_Rx")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -181,7 +181,7 @@ class sim_UDP_Rx_01(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0.set_frequency_range(self.freq, self.samp_rate)
 
 
-def main(top_block_cls=sim_UDP_Rx_01, options=None):
+def main(top_block_cls=E312_UDP_Rx, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
