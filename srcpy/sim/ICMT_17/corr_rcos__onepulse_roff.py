@@ -5,7 +5,7 @@ This is a test bed script to plot a bitsteam with its
 symbols shaped. 
 """
 import sys
-sys.path.append("../../srcpy")
+sys.path.append("../../sim")
 
 import numpy as np
 import scipy.signal as signal

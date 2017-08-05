@@ -6,7 +6,7 @@ symbols shaped.
 """
 import sys
 
-sys.path.append("../../srcpy")
+sys.path.append("../../sim")
 
 import numpy as np
 import scipy.signal as signal
