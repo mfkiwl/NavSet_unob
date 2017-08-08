@@ -19,16 +19,17 @@ from utils import freqaxis_shape as ut
 
 from correlators import corrCUDA as corcud
 from correlators import corrMKL as cormkl
+from correlators import corrNumpy as cornp
 
 ##################### Parameters ######################
 f_sampl = 50e3 		# sampling frequency in kHz
-T_int = 10 			# entire signal length in ms
+T_int = 30 			# entire signal length in ms
 
 ##################### Simulation ######################
 t = np.arange(0,T_int,1/f_sampl)	# time axis
 f = ut.freq_fr_time (t)				# frequency axis
 tc = ut.corr_fr_time (t)			# correlation time axis
-cd = prn.gold_seq(3,5,no_periods = 1)	# code
+cd = prn.gold_seq(3,5,no_periods = 3)	# code
 Ts = 10e-3							# Nyquist's symbol interval
 tau = 0.3							# time acceleration factor
 Tstr = Ts * tau						# transmitted symbol interval
@@ -41,7 +42,7 @@ a1 = gen.rcos_tr(t,Tstr,td + Tstr/2,cd,Ts,1.0)
 print ("Length of the signal", np.size(a1))
 
 #print(60 * '-')
-#print('CUDA correlator')
+#print('CUDA FFT correlator')
 #print(60 * '-')
 #p = profiler.Profile(signatures=False)
 #p.enable()
@@ -50,16 +51,25 @@ print ("Length of the signal", np.size(a1))
 #p.print_stats()
 #print(60 * '-')
 
+#print(60 * '-')
+#print('MKL FFT correlator')
+#print(60 * '-')
+#p = profiler.Profile(signatures=False)
+#p.enable()
+#cm = cormkl.corr_FD (a1,a1)
+#p.disable()
+#p.print_stats()
+#print(60 * '-')
+
 print(60 * '-')
-print('MKL correlator')
+print('Numpy FFT correlator')
 print(60 * '-')
 p = profiler.Profile(signatures=False)
 p.enable()
-cm = cormkl.corr_FD (a1,a1)
+cn = cornp.corr_CORR (a1,a1)
 p.disable()
 p.print_stats()
 print(60 * '-')
-
 
 # Correlate processor
 #ts = timer()
