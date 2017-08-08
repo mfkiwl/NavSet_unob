@@ -19,6 +19,7 @@ from utils import freqaxis_shape as ut
 
 from correlators import corrCUDA as corcud
 from correlators import corrMKL as cormkl
+from correlators import corrNumpy as cornp
 
 ##################### Parameters ######################
 f_sampl = 50e3 		# sampling frequency in kHz
@@ -56,6 +57,16 @@ print(60 * '-')
 p = profiler.Profile(signatures=False)
 p.enable()
 cm = cormkl.corr_td_single (a1,a1)
+p.disable()
+p.print_stats()
+print(60 * '-')
+
+print(60 * '-')
+print('Numpy correlator')
+print(60 * '-')
+p = profiler.Profile(signatures=False)
+p.enable()
+cn = cornp.corr_td_single (a1,a1)
 p.disable()
 p.print_stats()
 print(60 * '-')
