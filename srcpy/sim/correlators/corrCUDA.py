@@ -13,6 +13,12 @@ def best_grid_size(size, tpb):
     return tuple(bpg)
 
 
+@cuda.jit('void(float32[:], float32[:])')
+def mult_inplace(img, resp):
+    i = cuda.grid(1)
+    img[i] *= resp[i]
+
+
 def corr_FD(x1,x2):
     threadperblock = 32, 8
     blockpergrid = best_grid_size(tuple(reversed(x1.shape)), threadperblock)
@@ -26,8 +32,8 @@ def corr_FD(x1,x2):
 
     #ft.FFTPlan(shape=x1.shape, itype=np.float32, otype=np.complex64)
 
-    X1 = x1.astype(np.complex64)
-    X2 = x2.astype(np.complex64)
+    X1 = x1.astype(np.float32)
+    X2 = x2.astype(np.float32)
 
 
     stream1 = cuda.stream()
@@ -35,7 +41,7 @@ def corr_FD(x1,x2):
 
     fftplan1 = ft.FFTPlan(shape=x1.shape, itype=np.float32,
                        otype=np.complex64, stream=stream1)
-    fftplan2 = ft.FFTPlan(shape=x1.shape, itype=np.float32,
+    fftplan2 = ft.FFTPlan(shape=x2.shape, itype=np.float32,
                        otype=np.complex64, stream=stream2)
 
     # pagelock memory
@@ -48,15 +54,15 @@ def corr_FD(x1,x2):
 
         fftplan1.forward(d_X1, out=d_X1)
         fftplan2.forward(d_X2, out=d_X2)
+        print ('d_X1 is ',np.shape(d_X1),type(d_X1),np.max(d_X1))
+        print ('d_X2 is ',np.shape(d_X2),type(d_X2),np.max(d_X2))
 
         stream2.synchronize()
 
-        ft.mult_inplace[blockpergrid, threadperblock, stream1](d_X1, d_X2)
+        mult_inplace[blockpergrid, threadperblock, stream1](d_X1, d_X2)
         fftplan1.inverse(d_X1, out=d_X1)
 
         # implicitly synchronizes the streams
         c = d_X1.copy_to_host().real / np.prod(x1.shape)
-
-
 
     return c

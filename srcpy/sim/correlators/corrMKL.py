@@ -14,8 +14,8 @@ def corr_FD(x1,x2):
     X1 = ftpck.rfft(x1)
     X2 = ftpck.rfft(x2)
 
-    C = blas.dot(X1,np.conjugate(X2))
+    C = X1 * np.conjugate(X2)
 
-    c = ftpck.irfft(C)
+    c = ftpck.ifft(C)
 
     return c

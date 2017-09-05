@@ -1,10 +1,15 @@
 Introduction
 ============
-The functions described here are prepared to generate digitalized version of radio signals in both baseband and passband. Resuting signals are stored in form of NumPy arrays. 
+The project was started to prepare complete set of functions to both simulate and implement procedures and blocks of a Navigation Software Defined Radio (NavSDR).
+
+First set of functions is prepared to generate digitalized version of radio signals in both baseband and passband. Resuting signals are stored in form of NumPy arrays. These functions form a transmitter functionality of the NavSDR.
+
+Secondly the correlators were prepared to measure time-delay between two signals or a signals and its own copy. These functions are based on the parallel processing using two different libraries -- MKL library by Intel and Cuda library by NVidia.
 
 Dependencies:
 -------------
-Python 3.5, Numpy 1.11.1
+Python 3.6, Numpy 1.12.1, Accelerate 2.3.1, Accelerate Cudalib 2.0;
+Note: All packages were installed as part of the Anaconda  4.3.24 and Python 3.6.2 running on the platform linux-64
 
 Installation
 ------------

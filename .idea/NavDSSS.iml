@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/srcc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gnuradio" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.6.2 (~/anaconda3/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">

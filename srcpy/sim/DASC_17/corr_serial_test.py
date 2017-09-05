@@ -23,13 +23,13 @@ from correlators import corrNumpy as cornp
 
 ##################### Parameters ######################
 f_sampl = 50e3 		# sampling frequency in kHz
-T_int = 10 			# entire signal length in ms
+T_int = 0.5 			# entire signal length in ms
 
 ##################### Simulation ######################
 t = np.arange(0,T_int,1/f_sampl)	# time axis
 f = ut.freq_fr_time (t)				# frequency axis
 tc = ut.corr_fr_time (t)			# correlation time axis
-cd = prn.gold_seq(3,5,no_periods = 1)	# code
+cd = prn.gold_seq(3,5,no_bits = 500)	# code
 Ts = 10e-3							# Nyquist's symbol interval
 tau = 0.3							# time acceleration factor
 Tstr = Ts * tau						# transmitted symbol interval

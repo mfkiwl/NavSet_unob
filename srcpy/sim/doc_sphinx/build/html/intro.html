@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introduction &#8212; Tx_functions 0.1.1 documentation</title>
+    <title>Introduction &#8212; Navigation SDR signal processing 0.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,18 +14,20 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.1',
+        VERSION:     '0.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Tx_functions 0.1.1 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="&lt;no title&gt;" href="modules.html" />
-    <link rel="prev" title="Welcome to Tx_functions’s documentation!" href="index.html" />
+    <link rel="prev" title="Navigation SDR signal processing documentation" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,7 +35,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -43,14 +45,17 @@
             
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>The functions described here are prepared to generate digitalized version of radio signals in both baseband and passband. Resuting signals are stored in form of NumPy arrays.</p>
+<p>The project was started to prepare complete set of functions to both simulate and implement procedures and blocks of a Navigation Software Defined Radio (NavSDR).</p>
+<p>First set of functions is prepared to generate digitalized version of radio signals in both baseband and passband. Resuting signals are stored in form of NumPy arrays. These functions form a transmitter functionality of the NavSDR.</p>
+<p>Secondly the correlators were prepared to measure time-delay between two signals or a signals and its own copy. These functions are based on the parallel processing using two different libraries – MKL library by Intel and Cuda library by NVidia.</p>
 <div class="section" id="dependencies">
 <h2>Dependencies:<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Python 3.5, Numpy 1.11.1</p>
+<p>Python 3.6, Numpy 1.12.1, Accelerate 2.3.1, Accelerate Cudalib 2.0;
+Note: All packages were installed as part of the Anaconda  4.3.24 and Python 3.6.2 running on the platform linux-64</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>No special operation required. All what needs to be done is to save entire &#8216;&#8217;srcpy&#8217;&#8217; folder with its contents and use any function. Once they are called from the &#8216;&#8217;srcpy&#8217;&#8217; folder they should work immediatelly, otherwise make sure you have the &#8216;&#8217;srcpy&#8217;&#8217; folder included in your python system path.</p>
+<p>No special operation required. All what needs to be done is to save entire ‘’srcpy’’ folder with its contents and use any function. Once they are called from the ‘’srcpy’’ folder they should work immediatelly, otherwise make sure you have the ‘’srcpy’’ folder included in your python system path.</p>
 </div>
 </div>
 
@@ -72,7 +77,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Tx_functions&#8217;s documentation!</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Navigation SDR signal processing documentation</a></li>
       <li>Next: <a href="modules.html" title="next chapter">&lt;no title&gt;</a></li>
   </ul></li>
 </ul>
@@ -80,7 +85,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/intro.txt"
+      <li><a href="_sources/intro.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -102,11 +107,11 @@
       &copy;2017, Petr Bojda.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/intro.txt"
+      <a href="_sources/intro.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
